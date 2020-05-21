@@ -58,6 +58,13 @@ impl EventHandler for Handler {
                 println!("Error sending message: {:?}", why);
             }
         }
+		// Shutdown the bot if a user sends the message `^quit`.
+		if msg.content == "^quit" {
+			if let Err(why) = msg.channel_id.say(&ctx.http, "Shutting down now!") {
+                println!("Error sending message: {:?}", why);
+            }
+			std::process::exit(0);
+		}
     }
 
     // Set a handler to be called on the `ready` event. This is called when a
