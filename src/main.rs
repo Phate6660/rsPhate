@@ -2,7 +2,6 @@ use std::env;
 use std::process::Command;
 
 use serenity::{
-    http::AttachmentType,
     model::{channel::Message, gateway::Ready},
     prelude::*,
     utils::MessageBuilder,
