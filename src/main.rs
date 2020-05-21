@@ -138,11 +138,11 @@ impl EventHandler for Handler {
                     e.description("List available commands.");
                     // false = not inline
 					e.fields(vec![
-                        ("`^date`", "Display the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
+                        ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
 						("`^invite`", "Create a 24 hour invite and send link in message.", false),
                         ("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
 						("`^wipltrn`", "What is Phate listening to right now?", false),
-						("`^ww`", "Bot will reply with -- \"User [insert bolded username here] used the ^ww command in the [insert channel mention here] channel\".", false),
+						("`^ww`", "Bot will reply in the format -- User **Phate6660** used the `^ww` command in the #general channel.", false),
 						("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
                     ]);
                     e
@@ -162,7 +162,15 @@ impl EventHandler for Handler {
     // private channels, and more.
     //
     // In this case, just print what the current user's username is.
-    fn ready(&self, _: Context, ready: Ready) {
+	// Also set the activity to "^ls to view commands".
+    fn ready(&self, ctx: Context, ready: Ready) {
+        use serenity::model::gateway::Activity;
+        use serenity::model::user::OnlineStatus;
+
+        let activity = Activity::playing("^ls to view commands");
+        let status = OnlineStatus::Online;
+
+        ctx.set_presence(Some(activity), status);
         println!("{} is connected!", ready.user.name);
     }
 }
