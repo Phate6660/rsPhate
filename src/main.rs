@@ -4,7 +4,7 @@ use std::process::Command;
 use serenity::{
     model::{channel::Message, gateway::Ready},
     prelude::*,
-	utils::MessageBuilder,
+    utils::MessageBuilder,
 };
 
 struct Handler;
@@ -17,26 +17,32 @@ impl EventHandler for Handler {
     // events can be dispatched simultaneously.
     fn message(&self, ctx: Context, msg: Message) {
         // If the user sends the message "^date", the bot replies with the current date and time.
-		if msg.content == "^date" {
-			// `date` equals the output of the command `date +"%I:%M %p | %a %d, %b of %Y"`.
-			let date = Command::new("date").arg("+`%I:%M %p | %a %d, %b of %Y`").output().expect("Couldn't obtain current date and time.");
+        if msg.content == "^date" {
+            // `date` equals the output of the command `date +"%I:%M %p | %a %d, %b of %Y"`.
+            let date = Command::new("date")
+                .arg("+`%I:%M %p | %a %d, %b of %Y`")
+                .output()
+                .expect("Couldn't obtain current date and time.");
             // Sending a message can fail, due to a network error, an
             // authentication error, or lack of permissions to post in the
             // channel, so log to stdout when some error happens, with a
             // description of it.
-			if let Err(why) = msg.channel_id.say(&ctx.http, String::from_utf8_lossy(&date.stdout)) {
+            if let Err(why) = msg
+                .channel_id
+                .say(&ctx.http, String::from_utf8_lossy(&date.stdout))
+            {
                 println!("Error sending message: {:?}", why);
             }
-		}
-		// If the user sends the message "^ww", the bot replies with who messaged and where.
-		if msg.content == "^ww" {
-			// Obtain channel.
-			let channel = match msg.channel_id.to_channel(&ctx) {
+        }
+        // If the user sends the message "^ww", the bot replies with who messaged and where.
+        if msg.content == "^ww" {
+            // Obtain channel.
+            let channel = match msg.channel_id.to_channel(&ctx) {
                 Ok(channel) => channel,
                 Err(why) => {
                     println!("Error getting channel: {:?}", why);
                     return;
-                },
+                }
             };
 
             // The message builder allows for creating a message by
@@ -54,7 +60,7 @@ impl EventHandler for Handler {
             if let Err(why) = msg.channel_id.say(&ctx.http, &response) {
                 println!("Error sending message: {:?}", why);
             }
-		}
+        }
     }
 
     // Set a handler to be called on the `ready` event. This is called when a
@@ -70,8 +76,7 @@ impl EventHandler for Handler {
 
 fn main() {
     // Configure the client with your Discord bot token in the environment.
-    let token = env::var("DISCORD_TOKEN")
-        .expect("Expected a token in the environment");
+    let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
 
     // Create a new instance of the Client, logging in as a bot. This will
     // automatically prepend your bot token with "Bot ", which is a requirement
