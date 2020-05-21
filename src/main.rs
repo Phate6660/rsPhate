@@ -2,6 +2,7 @@ use std::env;
 use std::process::Command;
 
 use serenity::{
+    http::AttachmentType,
     model::{channel::Message, gateway::Ready},
     prelude::*,
     utils::MessageBuilder,
@@ -71,6 +72,35 @@ impl EventHandler for Handler {
                 println!("Error sending message: {:?}", why);
             }
         }
+        // Create a temporary invite.
+        if msg.content == "^invite" {
+            let channel = match ctx.cache.read().guild_channel(msg.channel_id) {
+                Some(channel) => channel,
+                None => {
+                    let _ = msg.channel_id.say(&ctx, "Error creating invite");
+                    return;
+                }
+            };
+
+            let channel = channel.read();
+
+            let creation = channel.create_invite(&ctx, |i| i.max_age(3600));
+
+            let invite = match creation {
+                Ok(invite) => invite,
+                Err(why) => {
+                    println!("Err creating invite: {:?}", why);
+                    if let Err(why) = msg.channel_id.say(&ctx, "Error creating invite") {
+                        println!("Err sending err msg: {:?}", why);
+                    }
+
+                    return;
+                }
+            };
+
+            let content = format!("Here's your invite: {}", invite.url());
+            let _ = msg.channel_id.say(&ctx, &content);
+        }
         // List available commands.
         if msg.content == "^ls" {
             let msg = msg.channel_id.send_message(&ctx.http, |m| {
@@ -79,10 +109,11 @@ impl EventHandler for Handler {
                     e.description("List available commands.");
                     // false = not inline
 					e.fields(vec![
-                        ("`^date`", "Display the date in the format -- `06:30 AM | Thu 21, May of 2020`", false),
-                        ("`^ww`", "bot will reply with -- \"User [insert bolded username here] used the ^ww command in the [insert channel mention here] channel\"", false),
-						("`^rr`", "bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview", false),
-						("`^quit`", "bot will reply with \"Shutting down now!\" and shut itself down directly after", false),
+                        ("`^date`", "Display the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
+						("`^invite`", "Create a 24 hour invite and send link in message.", false),
+                        ("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
+						("`^ww`", "Bot will reply with -- \"User [insert bolded username here] used the ^ww command in the [insert channel mention here] channel\".", false),
+						("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
                     ]);
                     e
                 });
