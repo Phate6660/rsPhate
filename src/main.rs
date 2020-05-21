@@ -65,6 +65,11 @@ impl EventHandler for Handler {
             }
             std::process::exit(0);
         }
+        if msg.content == "^rr" {
+            if let Err(why) = msg.channel_id.say(&ctx.http, "<https://invidio.us/watch?v=dQw4w9WgXcQ&local=1>") {
+                println!("Error sending message: {:?}", why);
+            }
+        }
     }
 
     // Set a handler to be called on the `ready` event. This is called when a
