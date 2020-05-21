@@ -58,15 +58,38 @@ impl EventHandler for Handler {
                 println!("Error sending message: {:?}", why);
             }
         }
-        // Shutdown the bot if a user sends the message `^quit`.
+        // Shutdown the bot.
         if msg.content == "^quit" {
             if let Err(why) = msg.channel_id.say(&ctx.http, "Shutting down now!") {
                 println!("Error sending message: {:?}", why);
             }
-            std::process::exit(0);
+            std::process::exit(1); // Exit code of 1 to let myself know the bot was shutdown via command.
         }
+        // Send a link to a rick roll without a link preview.
         if msg.content == "^rr" {
             if let Err(why) = msg.channel_id.say(&ctx.http, "<https://invidio.us/watch?v=dQw4w9WgXcQ&local=1>") {
+                println!("Error sending message: {:?}", why);
+            }
+        }
+        // List available commands.
+        if msg.content == "^ls" {
+            let msg = msg.channel_id.send_message(&ctx.http, |m| {
+                m.embed(|e| {
+                    e.title("`^ls`");
+                    e.description("List available commands.");
+                    // false = not inline
+					e.fields(vec![
+                        ("`^date`", "Display the date in the format -- `06:30 AM | Thu 21, May of 2020`", false),
+                        ("`^ww`", "bot will reply with -- \"User [insert bolded username here] used the ^ww command in the [insert channel mention here] channel\"", false),
+						("`^rr`", "bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview", false),
+						("`^quit`", "bot will reply with \"Shutting down now!\" and shut itself down directly after", false),
+                    ]);
+                    e
+                });
+                m
+            });
+
+            if let Err(why) = msg {
                 println!("Error sending message: {:?}", why);
             }
         }
