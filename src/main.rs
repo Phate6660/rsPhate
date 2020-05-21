@@ -130,14 +130,37 @@ impl EventHandler for Handler {
                 println!("Error sending message: {:?}", why);
             }
         }
+        // Information about the author and the bot.
+        if msg.content == "^about" {
+            let msg = msg.channel_id.send_message(&ctx.http, |m| {
+                m.embed(|e| {
+                    e.title("`rsPhate`");
+                    e.description("A bot with random and probably nonsensical features, made by Phate6660.\nWhere to find the author:");
+                    // false = not inline
+					e.fields(vec![
+                        ("Github", "https://github.com/Phate6660", false),
+						("Reddit", "https://reddit.com/u/Valley6660", false),
+                        ("Lobsters", "https://lobste.rs/u/Phate6660", false),
+						("Personal Site", "https://Phate6660.github.io/Main.html", false),
+						("Discord", "@Phate6660#6270", false),
+                    ]);
+                    e
+                });
+                m
+            });
+
+            if let Err(why) = msg {
+                println!("Error sending message: {:?}", why);
+            }
+        }
         // List available commands.
         if msg.content == "^ls" {
             let msg = msg.channel_id.send_message(&ctx.http, |m| {
                 m.embed(|e| {
                     e.title("`^ls`");
                     e.description("List available commands.");
-                    // false = not inline
-					e.fields(vec![
+                    e.fields(vec![
+						("`^about`", "Information about the author and the bot. (But mostly the author.)", false),
                         ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
 						("`^invite`", "Create a 24 hour invite and send link in message.", false),
                         ("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
@@ -162,7 +185,7 @@ impl EventHandler for Handler {
     // private channels, and more.
     //
     // In this case, just print what the current user's username is.
-	// Also set the activity to "^ls to view commands".
+    // Also set the activity to "^ls to view commands".
     fn ready(&self, ctx: Context, ready: Ready) {
         use serenity::model::gateway::Activity;
         use serenity::model::user::OnlineStatus;
