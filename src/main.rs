@@ -27,10 +27,7 @@ impl EventHandler for Handler {
             // authentication error, or lack of permissions to post in the
             // channel, so log to stdout when some error happens, with a
             // description of it.
-            if let Err(why) = msg
-                .channel_id
-                .say(&ctx.http, String::from_utf8_lossy(&date.stdout))
-            {
+            if let Err(why) = msg.channel_id.say(&ctx.http, String::from_utf8_lossy(&date.stdout)) {
                 println!("Error sending message: {:?}", why);
             }
         }
