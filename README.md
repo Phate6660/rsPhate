@@ -8,5 +8,6 @@ A Discord bot written in Rust.
 - `^invite`: Create a 24 hour invite and send link in message.
 - `^ls`: Bot will reply with a pretty embed that lists and describes available commands.
 - `^rr`: Bot will reply with a link to Rick Astley's "Never Gonna Give You Up".
+- `^wipltrn`: Bot will reply with pretty embed containing music info (via `mpc`) and cover art (via `/tmp/cover.png`).
 - `^ww`: Bot will reply with -- "User [insert bolded username here] used the `^ww` command in the [insert channel mention here] channel".
 - `^quit`: Bot will reply with "Shutting down now!" and shut itself down directly after.

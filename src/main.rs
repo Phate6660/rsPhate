@@ -1,7 +1,8 @@
-use std::env;
 use std::process::Command;
+use std::{env, path::Path};
 
 use serenity::{
+    http::AttachmentType,
     model::{channel::Message, gateway::Ready},
     prelude::*,
     utils::MessageBuilder,
@@ -100,6 +101,35 @@ impl EventHandler for Handler {
             let content = format!("Here's your invite: {}", invite.url());
             let _ = msg.channel_id.say(&ctx, &content);
         }
+        // Display what Phate is currently listening to.
+        if msg.content == "^wipltrn" {
+            // `mus_title` = artist - title
+            let mus_title = Command::new("sh")
+                .arg("-c")
+                .arg("mpc -f \"%artist% - %title%\" | head -n1")
+                .output()
+                .expect("Could not obtain artist and title.");
+            // `mus_album` = album (date)
+            let mus_album = Command::new("sh")
+                .arg("-c")
+                .arg("mpc -f \"%album% (%date%)\" | head -n1")
+                .output()
+                .expect("Could not obtain album and date.");
+            let msg = msg.channel_id.send_message(&ctx.http, |m| {
+                m.embed(|e| {
+                    e.title(String::from_utf8_lossy(&mus_title.stdout));
+                    e.description(String::from_utf8_lossy(&mus_album.stdout));
+                    e.image("attachment://cover.png");
+                    e
+                });
+                m.add_file(AttachmentType::Path(Path::new("/tmp/cover.png")));
+                m
+            });
+
+            if let Err(why) = msg {
+                println!("Error sending message: {:?}", why);
+            }
+        }
         // List available commands.
         if msg.content == "^ls" {
             let msg = msg.channel_id.send_message(&ctx.http, |m| {
@@ -111,6 +141,7 @@ impl EventHandler for Handler {
                         ("`^date`", "Display the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
 						("`^invite`", "Create a 24 hour invite and send link in message.", false),
                         ("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
+						("`^wipltrn`", "What is Phate listening to right now?", false),
 						("`^ww`", "Bot will reply with -- \"User [insert bolded username here] used the ^ww command in the [insert channel mention here] channel\".", false),
 						("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
                     ]);
