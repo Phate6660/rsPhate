@@ -10,4 +10,5 @@ A Discord bot written in Rust.
 - `^msg`: Direct message user with list of commands.
 - `^rr`: Bot will reply with a link (without a link preview) to Rick Astley's "Never Gonna Give You Up".
 - `^wipltrn`: Bot will reply with pretty embed containing music info (via `mpc`) and cover art (via `/tmp/cover.png`).
+- `^ww {steam,systemd}`: Bot will reply with pretty embed explaining why the topic is bad.
 - `^quit`: Bot will reply with "Shutting down now!" and shut itself down directly after.
