@@ -153,6 +153,44 @@ impl EventHandler for Handler {
                 println!("Error sending message: {:?}", why);
             }
         }
+        // Direct message user with list of commands.
+        if msg.content == "^msg" {
+			// Bot will send embed as DM.
+            let dm = msg.author.dm(&ctx, |m| {
+				m.content("Hello! Here's your personal list of commands!");
+                m.embed(|e| {
+                    e.title("`^ls`");
+                    e.description("List available commands.");
+                    e.fields(vec![
+						("`^about`", "Information about the author and the bot. (But mostly the author.)", false),
+                        ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
+						("`^invite`", "Create a 24 hour invite and send link in message.", false),
+                        ("`^msg`", "Direct message user with list of commands.", false),
+						("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
+						("`^wipltrn`", "What is Phate listening to right now?", false),
+						("`^ww`", "Bot will reply in the format -- User **Phate6660** used the `^ww` command in the #general channel.", false),
+						("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
+                    ]);
+                    e
+                });
+                m
+            });
+
+            if let Err(why) = dm {
+                println!("Error when direct messaging user: {:?}", why);
+            }
+
+			// Bot will send "Your message has been sent in a DM, **user**."
+            let response = MessageBuilder::new()
+                .push("Your message has been sent in a DM, ")
+                .push_bold_safe(&msg.author.name)
+                .push(".")
+                .build();
+
+            if let Err(why) = msg.channel_id.say(&ctx.http, &response) {
+                println!("Error sending message: {:?}", why);
+            }
+        }
         // List available commands.
         if msg.content == "^ls" {
             let msg = msg.channel_id.send_message(&ctx.http, |m| {
@@ -163,7 +201,8 @@ impl EventHandler for Handler {
 						("`^about`", "Information about the author and the bot. (But mostly the author.)", false),
                         ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
 						("`^invite`", "Create a 24 hour invite and send link in message.", false),
-                        ("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
+                        ("`^msg`", "Direct message user with list of commands.", false),
+						("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
 						("`^wipltrn`", "What is Phate listening to right now?", false),
 						("`^ww`", "Bot will reply in the format -- User **Phate6660** used the `^ww` command in the #general channel.", false),
 						("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
