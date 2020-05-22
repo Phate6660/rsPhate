@@ -185,6 +185,7 @@ fn about(ctx: &mut Context, msg: &Message) -> CommandResult {
                 ("Lobsters", "https://lobste.rs/u/Phate6660", false),
 				("Personal Site", "https://Phate6660.github.io/Main.html", false),
 				("Discord", "@Phate6660#6270", false),
+				("Source Code", "https://github.com/Phate6660/rsPhate", false),
             ]);
             e
         });
