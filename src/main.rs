@@ -1,12 +1,33 @@
 use std::process::Command;
+use std::{collections::HashMap, sync::Arc};
 use std::{env, path::Path};
 
 use serenity::{
+    client::bridge::gateway::ShardManager,
+    framework::standard::{
+        macros::{command, group},
+        Args, CommandResult, DispatchError, StandardFramework,
+    },
     http::AttachmentType,
     model::{channel::Message, gateway::Ready},
     prelude::*,
     utils::MessageBuilder,
 };
+
+// A container type is created for inserting into the Client's `data`, which
+// allows for data to be accessible across all events and framework commands, or
+// anywhere else that has a copy of the `data` Arc.
+struct ShardManagerContainer;
+
+impl TypeMapKey for ShardManagerContainer {
+    type Value = Arc<Mutex<ShardManager>>;
+}
+
+struct CommandCounter;
+
+impl TypeMapKey for CommandCounter {
+    type Value = HashMap<String, u64>;
+}
 
 struct Handler;
 
@@ -16,208 +37,7 @@ impl EventHandler for Handler {
     //
     // Event handlers are dispatched through a threadpool, and so multiple
     // events can be dispatched simultaneously.
-    fn message(&self, ctx: Context, msg: Message) {
-        // If the user sends the message "^date", the bot replies with the current date and time.
-        if msg.content == "^date" {
-            // `date` equals the output of the command `date +"%I:%M %p | %a %d, %b of %Y"`.
-            let date = Command::new("date")
-                .arg("+`%I:%M %p | %a %d, %b of %Y`")
-                .output()
-                .expect("Couldn't obtain current date and time.");
-            // Sending a message can fail, due to a network error, an
-            // authentication error, or lack of permissions to post in the
-            // channel, so log to stdout when some error happens, with a
-            // description of it.
-            if let Err(why) = msg.channel_id.say(&ctx.http, String::from_utf8_lossy(&date.stdout)) {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-        // If the user sends the message "^ww", the bot replies with who messaged and where.
-        if msg.content == "^ww" {
-            // Obtain channel.
-            let channel = match msg.channel_id.to_channel(&ctx) {
-                Ok(channel) => channel,
-                Err(why) => {
-                    println!("Error getting channel: {:?}", why);
-                    return;
-                }
-            };
-
-            // The message builder allows for creating a message by
-            // mentioning users dynamically, pushing "safe" versions of
-            // content (such as bolding normalized content), displaying
-            // emojis, and more.
-            let response = MessageBuilder::new()
-                .push("User ")
-                .push_bold_safe(&msg.author.name)
-                .push(" used the `^ww` command in the ")
-                .mention(&channel)
-                .push(" channel")
-                .build();
-
-            if let Err(why) = msg.channel_id.say(&ctx.http, &response) {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-        // Shutdown the bot.
-        if msg.content == "^quit" {
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Shutting down now!") {
-                println!("Error sending message: {:?}", why);
-            }
-            std::process::exit(1); // Exit code of 1 to let myself know the bot was shutdown via command.
-        }
-        // Send a link to a rick roll without a link preview.
-        if msg.content == "^rr" {
-            if let Err(why) = msg.channel_id.say(&ctx.http, "<https://invidio.us/watch?v=dQw4w9WgXcQ&local=1>") {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-        // Create a temporary invite.
-        if msg.content == "^invite" {
-            let channel = match ctx.cache.read().guild_channel(msg.channel_id) {
-                Some(channel) => channel,
-                None => {
-                    let _ = msg.channel_id.say(&ctx, "Error creating invite");
-                    return;
-                }
-            };
-
-            let channel = channel.read();
-
-            let creation = channel.create_invite(&ctx, |i| i.max_age(3600));
-
-            let invite = match creation {
-                Ok(invite) => invite,
-                Err(why) => {
-                    println!("Err creating invite: {:?}", why);
-                    if let Err(why) = msg.channel_id.say(&ctx, "Error creating invite") {
-                        println!("Err sending err msg: {:?}", why);
-                    }
-
-                    return;
-                }
-            };
-
-            let content = format!("Here's your invite: {}", invite.url());
-            let _ = msg.channel_id.say(&ctx, &content);
-        }
-        // Display what Phate is currently listening to.
-        if msg.content == "^wipltrn" {
-            // `mus_title` = artist - title
-            let mus_title = Command::new("sh")
-                .arg("-c")
-                .arg("mpc -f \"%artist% - %title%\" | head -n1")
-                .output()
-                .expect("Could not obtain artist and title.");
-            // `mus_album` = album (date)
-            let mus_album = Command::new("sh")
-                .arg("-c")
-                .arg("mpc -f \"%album% (%date%)\" | head -n1")
-                .output()
-                .expect("Could not obtain album and date.");
-            let msg = msg.channel_id.send_message(&ctx.http, |m| {
-                m.embed(|e| {
-                    e.title(String::from_utf8_lossy(&mus_title.stdout));
-                    e.description(String::from_utf8_lossy(&mus_album.stdout));
-                    e.image("attachment://cover.png");
-                    e
-                });
-                m.add_file(AttachmentType::Path(Path::new("/tmp/cover.png")));
-                m
-            });
-
-            if let Err(why) = msg {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-        // Information about the author and the bot.
-        if msg.content == "^about" {
-            let msg = msg.channel_id.send_message(&ctx.http, |m| {
-                m.embed(|e| {
-                    e.title("`rsPhate`");
-                    e.description("A bot with random and probably nonsensical features, made by Phate6660.\nWhere to find the author:");
-                    // false = not inline
-					e.fields(vec![
-                        ("Github", "https://github.com/Phate6660", false),
-						("Reddit", "https://reddit.com/u/Valley6660", false),
-                        ("Lobsters", "https://lobste.rs/u/Phate6660", false),
-						("Personal Site", "https://Phate6660.github.io/Main.html", false),
-						("Discord", "@Phate6660#6270", false),
-                    ]);
-                    e
-                });
-                m
-            });
-
-            if let Err(why) = msg {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-        // Direct message user with list of commands.
-        if msg.content == "^msg" {
-			// Bot will send embed as DM.
-            let dm = msg.author.dm(&ctx, |m| {
-				m.content("Hello! Here's your personal list of commands!");
-                m.embed(|e| {
-                    e.title("`^ls`");
-                    e.description("List available commands.");
-                    e.fields(vec![
-						("`^about`", "Information about the author and the bot. (But mostly the author.)", false),
-                        ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
-						("`^invite`", "Create a 24 hour invite and send link in message.", false),
-                        ("`^msg`", "Direct message user with list of commands.", false),
-						("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
-						("`^wipltrn`", "What is Phate listening to right now?", false),
-						("`^ww`", "Bot will reply in the format -- User **Phate6660** used the `^ww` command in the #general channel.", false),
-						("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
-                    ]);
-                    e
-                });
-                m
-            });
-
-            if let Err(why) = dm {
-                println!("Error when direct messaging user: {:?}", why);
-            }
-
-			// Bot will send "Your message has been sent in a DM, **user**."
-            let response = MessageBuilder::new()
-                .push("Your message has been sent in a DM, ")
-                .push_bold_safe(&msg.author.name)
-                .push(".")
-                .build();
-
-            if let Err(why) = msg.channel_id.say(&ctx.http, &response) {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-        // List available commands.
-        if msg.content == "^ls" {
-            let msg = msg.channel_id.send_message(&ctx.http, |m| {
-                m.embed(|e| {
-                    e.title("`^ls`");
-                    e.description("List available commands.");
-                    e.fields(vec![
-						("`^about`", "Information about the author and the bot. (But mostly the author.)", false),
-                        ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
-						("`^invite`", "Create a 24 hour invite and send link in message.", false),
-                        ("`^msg`", "Direct message user with list of commands.", false),
-						("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
-						("`^wipltrn`", "What is Phate listening to right now?", false),
-						("`^ww`", "Bot will reply in the format -- User **Phate6660** used the `^ww` command in the #general channel.", false),
-						("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
-                    ]);
-                    e
-                });
-                m
-            });
-
-            if let Err(why) = msg {
-                println!("Error sending message: {:?}", why);
-            }
-        }
-    }
-
+    //
     // Set a handler to be called on the `ready` event. This is called when a
     // shard is booted, and a READY payload is sent by Discord. This payload
     // contains data like the current user's guild Ids, current user data,
@@ -237,6 +57,14 @@ impl EventHandler for Handler {
     }
 }
 
+#[group]
+#[commands(about, ls, msg, quit)]
+struct General;
+
+#[group]
+#[commands(date, rr, wipltrn)]
+struct Functions;
+
 fn main() {
     // Configure the client with your Discord bot token in the environment.
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
@@ -246,11 +74,278 @@ fn main() {
     // by Discord for bot users.
     let mut client = Client::new(&token, Handler).expect("Err creating client");
 
-    // Finally, start a single shard, and start listening to events.
-    //
-    // Shards will automatically attempt to reconnect, and will perform
-    // exponential backoff until it reconnects.
+    {
+        let mut data = client.data.write();
+        data.insert::<CommandCounter>(HashMap::default());
+        data.insert::<ShardManagerContainer>(Arc::clone(&client.shard_manager));
+    }
+
+    // Commands are equivalent to:
+    // "^about"
+    // "^date"
+    // "^ls"
+    // "^msg"
+    // "^rr"
+    // "^wipltrn"
+    // "^quit"
+    client.with_framework(
+        // Configures the client, allowing for options to mutate how the
+        // framework functions.
+        //
+        // Refer to the documentation for
+        // `serenity::ext::framework::Configuration` for all available
+        // configurations.
+        StandardFramework::new()
+            .configure(|c| {
+                c.with_whitespace(true)
+                    .prefix("^")
+                    // You can set multiple delimiters via delimiters()
+                    // or just one via delimiter(",")
+                    // If you set multiple delimiters, the order you list them
+                    // decides their priority (from first to last).
+                    //
+                    // In this case, if "," would be first, a message would never
+                    // be delimited at ", ", forcing you to trim your arguments if you
+                    // want to avoid whitespaces at the start of each.
+                    .delimiters(vec![", ", ","])
+            })
+            // Set a function to be called prior to each command execution. This
+            // provides the context of the command, the message that was received,
+            // and the full name of the command that will be called.
+            //
+            // You can not use this to determine whether a command should be
+            // executed. Instead, the `#[check]` macro gives you this functionality.
+            .before(|ctx, msg, command_name| {
+                println!(
+                    "Got command '{}' by user '{}'",
+                    command_name, msg.author.name
+                );
+
+                // Increment the number of times this command has been run once. If
+                // the command's name does not exist in the counter, add a default
+                // value of 0.
+                let mut data = ctx.data.write();
+                let counter = data
+                    .get_mut::<CommandCounter>()
+                    .expect("Expected CommandCounter in ShareMap.");
+                let entry = counter.entry(command_name.to_string()).or_insert(0);
+                *entry += 1;
+
+                true // if `before` returns false, command processing doesn't happen.
+            })
+            // Similar to `before`, except will be called directly _after_
+            // command execution.
+            .after(|_, _, command_name, error| match error {
+                Ok(()) => println!("Processed command '{}'", command_name),
+                Err(why) => println!("Command '{}' returned error {:?}", command_name, why),
+            })
+            // Set a function that's called whenever an attempted command-call's
+            // command could not be found.
+            .unrecognised_command(|_, _, unknown_command_name| {
+                println!("Could not find command named '{}'", unknown_command_name);
+            })
+            // Set a function that's called whenever a message is not a command.
+            .normal_message(|_, message| {
+                println!("Message is not a command '{}'", message.content);
+            })
+            // Set a function that's called whenever a command's execution didn't complete for one
+            // reason or another. For example, when a user has exceeded a rate-limit or a command
+            // can only be performed by the bot owner.
+            .on_dispatch_error(|ctx, msg, error| {
+                if let DispatchError::Ratelimited(seconds) = error {
+                    let _ = msg.channel_id.say(
+                        &ctx.http,
+                        &format!("Try this again in {} seconds.", seconds),
+                    );
+                }
+            })
+            // The `#[group]` macro generates `static` instances of the options set for the group.
+            // They're made in the pattern: `#name_GROUP` for the group instance and `#name_GROUP_OPTIONS`.
+            // #name is turned all uppercase
+            .group(&GENERAL_GROUP)
+            .group(&FUNCTIONS_GROUP),
+    );
+
     if let Err(why) = client.start() {
         println!("Client error: {:?}", why);
     }
+}
+
+#[command]
+fn about(ctx: &mut Context, msg: &Message) -> CommandResult {
+    let msg = msg.channel_id.send_message(&ctx.http, |m| {
+        m.embed(|e| {
+            e.title("`rsPhate`");
+            e.description("A bot with random and probably nonsensical features, made by Phate6660.\nWhere to find the author:");
+            // false = not inline
+			e.fields(vec![
+                ("Github", "https://github.com/Phate6660", false),
+				("Reddit", "https://reddit.com/u/Valley6660", false),
+                ("Lobsters", "https://lobste.rs/u/Phate6660", false),
+				("Personal Site", "https://Phate6660.github.io/Main.html", false),
+				("Discord", "@Phate6660#6270", false),
+            ]);
+            e
+        });
+        m
+    });
+
+    if let Err(why) = msg {
+        println!("Error sending message: {:?}", why);
+    }
+
+    Ok(())
+}
+
+#[command]
+fn date(ctx: &mut Context, msg: &Message) -> CommandResult {
+    // `date` equals the output of the command `date +"%I:%M %p | %a %d, %b of %Y"`.
+    let date = Command::new("date")
+        .arg("+`%I:%M %p | %a %d, %b of %Y`")
+        .output()
+        .expect("Couldn't obtain current date and time.");
+    // Sending a message can fail, due to a network error, an
+    // authentication error, or lack of permissions to post in the
+    // channel, so log to stdout when some error happens, with a
+    // description of it.
+    if let Err(why) = msg.channel_id.say(&ctx.http, String::from_utf8_lossy(&date.stdout)) {
+        println!("Error sending message: {:?}", why);
+    }
+
+    Ok(())
+}
+
+#[command]
+fn ls(ctx: &mut Context, msg: &Message) -> CommandResult {
+    let msg = msg.channel_id.send_message(&ctx.http, |m| {
+        m.embed(|e| {
+            e.title("`^ls`");
+            e.description("List available commands.");
+            e.fields(vec![
+				("`^about`", "Information about the author and the bot. (But mostly the author.)", false),
+                ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
+				("`^msg`", "Direct message user with list of commands.", false),
+				("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
+				("`^wipltrn`", "What is Phate listening to right now?", false),
+				("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
+            ]);
+            e
+        });
+        m
+    });
+
+    if let Err(why) = msg {
+        println!("Error sending message: {:?}", why);
+    }
+
+    Ok(())
+}
+
+#[command]
+fn msg(ctx: &mut Context, msg: &Message) -> CommandResult {
+    // Bot will send embed as DM.
+    let dm = msg.author.dm(&ctx, |m| {
+		m.content("Hello! Here's your personal list of commands!");
+        m.embed(|e| {
+            e.title("`^ls`");
+            e.description("List available commands.");
+            e.fields(vec![
+				("`^about`", "Information about the author and the bot. (But mostly the author.)", false),
+                ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
+				("`^msg`", "Direct message user with list of commands.", false),
+				("`^rr`", "Bot will reply with a link to Rick Astley's \"Never Gonna Give You Up\" without a link preview.", false),
+				("`^wipltrn`", "What is Phate listening to right now?", false),
+				("`^quit`", "Bot will reply with \"Shutting down now!\" and shut itself down directly after.", false),
+            ]);
+            e
+        });
+        m
+    });
+
+    if let Err(why) = dm {
+        println!("Error when direct messaging user: {:?}", why);
+    }
+
+    // The message builder allows for creating a message by
+    // mentioning users dynamically, pushing "safe" versions of
+    // content (such as bolding normalized content), displaying
+    // emojis, and more.
+    //
+    // Bot will send "Your message has been sent in a DM, **user**."
+    let response = MessageBuilder::new()
+        .push("Your message has been sent in a DM, ")
+        .push_bold_safe(&msg.author.name)
+        .push(".")
+        .build();
+
+    if let Err(why) = msg.channel_id.say(&ctx.http, &response) {
+        println!("Error sending message: {:?}", why);
+    }
+
+    Ok(())
+}
+
+#[command]
+fn rr(ctx: &mut Context, msg: &Message) -> CommandResult {
+    if let Err(why) = msg.channel_id.say(&ctx.http, "<https://invidio.us/watch?v=dQw4w9WgXcQ&local=1>") {
+        println!("Error sending message: {:?}", why);
+    }
+
+    Ok(())
+}
+
+#[command]
+fn wipltrn(ctx: &mut Context, msg: &Message) -> CommandResult {
+    // `mus_title` = artist - title
+    let mus_title = Command::new("sh")
+        .arg("-c")
+        .arg("mpc -f \"%artist% - %title%\" | head -n1")
+        .output()
+        .expect("Could not obtain artist and title.");
+    // `mus_album` = album (date)
+    let mus_album = Command::new("sh")
+        .arg("-c")
+        .arg("mpc -f \"%album% (%date%)\" | head -n1")
+        .output()
+        .expect("Could not obtain album and date.");
+    let msg = msg.channel_id.send_message(&ctx.http, |m| {
+        m.embed(|e| {
+            e.title(String::from_utf8_lossy(&mus_title.stdout));
+            e.description(String::from_utf8_lossy(&mus_album.stdout));
+            e.image("attachment://cover.png");
+            e
+        });
+        m.add_file(AttachmentType::Path(Path::new("/tmp/cover.png")));
+        m
+    });
+
+    if let Err(why) = msg {
+        println!("Error sending message: {:?}", why);
+    }
+
+    Ok(())
+}
+
+/* Argument testing.
+#[command]
+fn ww(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
+    let arg = args.rest();
+
+    if arg == "systemd" {
+        if let Err(why) = msg.channel_id.say(&ctx.http, "Systemd bad!") {
+            println!("Error sending message: {:?}", why);
+        }
+    }
+
+    Ok(())
+}
+*/
+
+#[command]
+fn quit(ctx: &mut Context, msg: &Message) -> CommandResult {
+    if let Err(why) = msg.channel_id.say(&ctx.http, "Shutting down now!") {
+        println!("Error sending message: {:?}", why);
+    }
+
+    std::process::exit(1); // Exit code of 1 to let myself know the bot was shutdown via command.
 }
