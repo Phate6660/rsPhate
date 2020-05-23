@@ -4,7 +4,7 @@ A Discord bot written in Rust.
 
 How to use:
 
-- `export DISCORD_TOKEN=token` (obtain your token from the bot section of the developers/application part of discordapp's website)
+- `export DISCORD_TOKEN=token` (obtain your token from the bot section of the developers part of discord's website)
 - `cargo run` or `cargo run --release` from the root dir of the repo, or at the very least, the .env file must be in the CWD
 
 ## Current Commands
