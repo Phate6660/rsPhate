@@ -9,7 +9,7 @@ use serenity::{
 fn msg(ctx: &mut Context, msg: &Message) -> CommandResult {
     // Bot will send embed as DM.
     let dm = msg.author.dm(&ctx, |m| {
-		m.content("Hello! Here's your personal list of commands!");
+        m.content("Hello! Here's your personal list of commands!");
         m.embed(|e| {
             e.title("`^ls`");
             e.description("List available commands.");

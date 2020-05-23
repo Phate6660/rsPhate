@@ -11,7 +11,7 @@ fn about(ctx: &mut Context, msg: &Message) -> CommandResult {
             e.title("`rsPhate`");
             e.description("A bot with random and probably nonsensical features, made by Phate6660.\nWhere to find the author:");
             // false = not inline
-			e.fields(vec![
+            e.fields(vec![
                 ("Github", "https://github.com/Phate6660", false),
                 ("Reddit", "https://reddit.com/u/Valley6660", false),
                 ("Lobsters", "https://lobste.rs/u/Phate6660", false),
