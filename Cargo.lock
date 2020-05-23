@@ -852,6 +852,7 @@ dependencies = [
 name = "rsPhate"
 version = "0.1.0"
 dependencies = [
+ "log",
  "serenity",
 ]
 
