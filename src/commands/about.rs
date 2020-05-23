@@ -13,11 +13,11 @@ fn about(ctx: &mut Context, msg: &Message) -> CommandResult {
             // false = not inline
 			e.fields(vec![
                 ("Github", "https://github.com/Phate6660", false),
-				("Reddit", "https://reddit.com/u/Valley6660", false),
+                ("Reddit", "https://reddit.com/u/Valley6660", false),
                 ("Lobsters", "https://lobste.rs/u/Phate6660", false),
-				("Personal Site", "https://Phate6660.github.io/Main.html", false),
-				("Discord", "@Phate6660#6270", false),
-				("Source Code", "https://github.com/Phate6660/rsPhate", false),
+                ("Personal Site", "https://Phate6660.github.io/Main.html", false),
+                ("Discord", "@Phate6660#6270", false),
+                ("Source Code", "https://github.com/Phate6660/rsPhate", false),
             ]);
             e
         });

@@ -1,10 +1,10 @@
-use std::path::Path;
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     http::AttachmentType,
     model::channel::Message,
     prelude::*,
 };
+use std::path::Path;
 use std::process::Command;
 
 #[command]

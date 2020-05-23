@@ -67,7 +67,7 @@ struct General;
 struct Functions;
 
 fn main() {
-	// This will load the environment variables located at `./.env`, relative to
+    // This will load the environment variables located at `./.env`, relative to
     // the CWD. See `./.env.example` for an example on how to structure this.
     kankyo::load().expect("Failed to load .env file");
 
@@ -77,7 +77,7 @@ fn main() {
     // `RUST_LOG` to debug`.
     env_logger::init();
 
-	// Configure the client with your Discord bot token in the environment.
+    // Configure the client with your Discord bot token in the environment.
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
 
     // Create a new instance of the Client, logging in as a bot. This will
@@ -128,7 +128,10 @@ fn main() {
             // You can not use this to determine whether a command should be
             // executed. Instead, the `#[check]` macro gives you this functionality.
             .before(|ctx, msg, command_name| {
-                info!("Got command '{}' by user '{}'", command_name, msg.author.name);
+                info!(
+                    "Got command '{}' by user '{}'",
+                    command_name, msg.author.name
+                );
 
                 // Increment the number of times this command has been run once. If
                 // the command's name does not exist in the counter, add a default
@@ -151,7 +154,7 @@ fn main() {
             // Set a function that's called whenever an attempted command-call's
             // command could not be found.
             .unrecognised_command(|_, _, unknown_command_name| {
-                info!("Could not find command named '{}'", unknown_command_name);
+                error!("Could not find command named '{}'", unknown_command_name);
             })
             // Set a function that's called whenever a command's execution didn't complete for one
             // reason or another. For example, when a user has exceeded a rate-limit or a command
