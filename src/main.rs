@@ -10,7 +10,10 @@ use std::{collections::HashMap, sync::Arc};
 
 // Load and use commands from src/commands/
 mod commands;
-use commands::{about::*, date::*, iv::*, ls::*, math::*, msg::*, projects::*, quit::*, rng::*, rr::*, wipltrn::*, ww::*};
+use commands::{
+    about::*, date::*, iv::*, ls::*, math::*, msg::*, projects::*, quit::*, rng::*, rr::*,
+    wipltrn::*, ww::*,
+};
 
 // A container type is created for inserting into the Client's `data`, which
 // allows for data to be accessible across all events and framework commands, or
