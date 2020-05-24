@@ -8,6 +8,25 @@ use serenity::{
 fn ww(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
     let arg = args.rest();
 
+	if arg == "apple" {
+		let msg = msg.channel_id.send_message(&ctx.http, |m| {
+            m.embed(|e| {
+                e.title("Why Phate6660 hates Apple:");
+                e.fields(vec![
+                    ("They are Evil", "They are a despicable, evil, and disgusting company. I find them to be even worse than Google, and probably even Amazon. They've done some truly terrible things. Some examples: mass censorship, worker abuse (manipulation/brainwashing, sweatshops), repairing your own device is not allowed, they fully support DRM, they exploit developers.", false),
+                    ("They Pretend", "They like to pretend that they are the good guys of tech. While companies like Google are extremely terrible for your privacy, at least they aren't pretending like they aren't. Apple likes to give people the illusion that you can pay for your privacy, which to put frankly, is not true at all. They still spy on you just as much, or even more than, Google does.", false),
+                    ("They are Restrictive and Controlling", "They limit and control what you are allowed to do with your own device. Want to repair your Mac? Nope, can't do that. Want to install a different OS? Nope, they'll do as much as they can to stop you from doing that. The reason why I prefer Google more (not that I like them, this is more about choosing the lesser evil), is because you are allowed to do something about it. Don't want Android spying on you? Most of the time (depending on the phone brand) you can easily unlock your phone, install a custom recovery, and install a custom ROM like LineageOS without installing GApps. With iPhones, try as you may, you will never have that same amount of control that you can have on an Android device.", false),
+                ]);
+                e
+            });
+            m
+        });
+
+        if let Err(why) = msg {
+            println!("Error sending message: {:?}", why);
+        }
+	}
+
     if arg == "steam" {
         let msg = msg.channel_id.send_message(&ctx.http, |m| {
             m.embed(|e| {

@@ -10,7 +10,7 @@ use std::{collections::HashMap, sync::Arc};
 
 // Load and use commands from src/commands/
 mod commands;
-use commands::{about::*, date::*, ls::*, msg::*, quit::*, rr::*, wipltrn::*, ww::*};
+use commands::{about::*, date::*, iv::*, ls::*, msg::*, projects::*, quit::*, rr::*, wipltrn::*, ww::*};
 
 // A container type is created for inserting into the Client's `data`, which
 // allows for data to be accessible across all events and framework commands, or
@@ -63,7 +63,7 @@ impl EventHandler for Handler {
 struct General;
 
 #[group]
-#[commands(date, rr, wipltrn, ww)]
+#[commands(date, iv, projects, rr, wipltrn, ww)]
 struct Functions;
 
 fn main() {
@@ -96,6 +96,7 @@ fn main() {
     // "^date"
     // "^ls"
     // "^msg"
+    // "^projects"
     // "^rr"
     // "^wipltrn"
     // "^ww {steam,systemd}"

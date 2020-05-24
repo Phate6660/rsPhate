@@ -11,11 +11,13 @@ How to use:
 
 - `^about`: Bot will reply with pretty embed containing title and description of bot, as well as where to find the author (me).
 - `^date`: Bot will reply with current date and time in this format -- `06:30 AM | Thu 21, May of 2020`.
+- `^iv SEARCH`: Bot will reply with an invidio link of the search query. Example: `^iv dead again type o negative` returns an invidio link of the full album. Requires `youtube-dl`.
 - `^ls`: Bot will reply with a pretty embed that lists and describes available commands.
 - `^msg`: Direct message user with list of commands.
+- `^projects`: Bot willk reply with pretty embed containing links to other projects by the author.
 - `^rr`: Bot will reply with a link (without a link preview) to Rick Astley's "Never Gonna Give You Up".
 - `^wipltrn`: Bot will reply with pretty embed containing music info (via `mpc`) and cover art (via `/tmp/cover.png`).
-- `^ww {steam,systemd}`: Bot will reply with pretty embed explaining why the topic is bad.
+- `^ww {apple,steam,systemd}`: Bot will reply with pretty embed explaining why the topic is bad.
 - `^quit`: Bot will reply with "Shutting down now!" and shut itself down directly after.
 
 ## Bot structure
