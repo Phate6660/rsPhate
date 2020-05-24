@@ -6,7 +6,7 @@ use serenity::{
 
 #[command]
 fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
-    let operation = args.single::<String>()?; // First argument
+    let operation = args.single::<String>()?; // First argument, ensure it's a string
 
     if operation == "multiply" {
         let first_number = args.single::<f64>()?; // Second argument

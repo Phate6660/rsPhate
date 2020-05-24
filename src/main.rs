@@ -45,7 +45,6 @@ impl EventHandler for Handler {
     // private channels, and more.
     //
     // In this case, just print what the current user's username is.
-    // Also set the activity to "^ls to view commands".
     fn ready(&self, ctx: Context, ready: Ready) {
         use serenity::model::gateway::Activity;
         use serenity::model::user::OnlineStatus;
@@ -70,14 +69,10 @@ struct General;
 struct Functions;
 
 fn main() {
-    // This will load the environment variables located at `./.env`, relative to
-    // the CWD. See `./.env.example` for an example on how to structure this.
+    // This will load the environment variables located at `./.env`, relative to the CWD.
     kankyo::load().expect("Failed to load .env file");
 
     // Initialize the logger to use environment variables.
-    //
-    // In this case, a good default is setting the environment variable
-    // `RUST_LOG` to debug`.
     env_logger::init();
 
     // Configure the client with your Discord bot token in the environment.
@@ -94,17 +89,6 @@ fn main() {
         data.insert::<ShardManagerContainer>(Arc::clone(&client.shard_manager));
     }
 
-    // Commands are equivalent to:
-    // "^about"
-    // "^date"
-    // "^ls"
-    // "^math operation expression"
-    // "^msg"
-    // "^projects"
-    // "^rr"
-    // "^wipltrn"
-    // "^ww {steam,systemd}"
-    // "^quit"
     client.with_framework(
         // Configures the client, allowing for options to mutate how the
         // framework functions.
@@ -116,14 +100,7 @@ fn main() {
             .configure(|c| {
                 c.with_whitespace(true)
                     .prefix("^")
-                    // You can set multiple delimiters via delimiters()
-                    // or just one via delimiter(",")
-                    // If you set multiple delimiters, the order you list them
-                    // decides their priority (from first to last).
-                    //
-                    // In this case, if "," would be first, a message would never
-                    // be delimited at ", ", forcing you to trim your arguments if you
-                    // want to avoid whitespaces at the start of each.
+                    // Delimiters are: " ", ", ", and ",".
                     .delimiters(vec![" ", ", ", ","])
             })
             // Set a function to be called prior to each command execution. This

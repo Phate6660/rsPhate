@@ -1,3 +1,6 @@
+// These are for making everything in `src/commands/*`
+// available in `src/main.rs` via `mod commands;`.
+// (Pssst, don't forget to `use` them as well.)
 pub mod about;
 pub mod date;
 pub mod iv;
