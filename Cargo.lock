@@ -927,6 +927,7 @@ dependencies = [
  "env_logger",
  "kankyo",
  "log",
+ "rand",
  "serenity",
 ]
 

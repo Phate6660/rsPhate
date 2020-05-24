@@ -10,7 +10,7 @@ use std::{collections::HashMap, sync::Arc};
 
 // Load and use commands from src/commands/
 mod commands;
-use commands::{about::*, date::*, iv::*, ls::*, msg::*, projects::*, quit::*, rr::*, wipltrn::*, ww::*};
+use commands::{about::*, date::*, iv::*, ls::*, math::*, msg::*, projects::*, quit::*, rng::*, rr::*, wipltrn::*, ww::*};
 
 // A container type is created for inserting into the Client's `data`, which
 // allows for data to be accessible across all events and framework commands, or
@@ -63,7 +63,7 @@ impl EventHandler for Handler {
 struct General;
 
 #[group]
-#[commands(date, iv, projects, rr, wipltrn, ww)]
+#[commands(date, iv, math, projects, rng, rr, wipltrn, ww)]
 struct Functions;
 
 fn main() {
@@ -95,6 +95,7 @@ fn main() {
     // "^about"
     // "^date"
     // "^ls"
+    // "^math operation expression"
     // "^msg"
     // "^projects"
     // "^rr"
@@ -120,7 +121,7 @@ fn main() {
                     // In this case, if "," would be first, a message would never
                     // be delimited at ", ", forcing you to trim your arguments if you
                     // want to avoid whitespaces at the start of each.
-                    .delimiters(vec![", ", ","])
+                    .delimiters(vec![" ", ", ", ","])
             })
             // Set a function to be called prior to each command execution. This
             // provides the context of the command, the message that was received,
