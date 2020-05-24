@@ -36,7 +36,7 @@ How to use:
 
 ## Notes
 
-- There are 3 valid delimiters for arguments. ` `, `, `, and `,`. That means any of these are valid: `^math add 1 1`, `^math add,1,1`, `^math add 1,1`, `^math add, 1 1`, etc.
 - `math`: Operation refers to `multiply`/`divide`/`add`/`subtract`. Example: `^math add 1 1` will make the bot reply with `2`.
 - `iv`: Requires `youtube-dl`. Example: `^iv type o negative dead again` will cause the bot to reply with an invidio link to the full album.
 - `wipltrn`: Requires `mpc`, and for the cover art to be present at `/tmp/cover.png`.
+- There are 3 valid delimiters for arguments. ` `, `, `, and `,`. That means any of these are valid: `^math add 1 1`, `^math add,1,1`, `^math add 1,1`, `^math add, 1 1`, etc.
