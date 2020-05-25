@@ -13,6 +13,7 @@ fn ls(ctx: &mut Context, msg: &Message) -> CommandResult {
             e.fields(vec![
                 ("`^about`", "Information about the author and the bot. (But mostly the author.)", false),
                 ("`^date`", "Bot will reply with the date in the format -- `06:30 AM | Thu 21, May of 2020`.", false),
+                ("`^hmm`", "How much music does Phate have?", false),
                 ("`^iv SEARCH`", "Bot will reply with the first invidio link it can find related to the search query.", false),
                 ("`^math operation num num`", "Bot will do math for you and send a message with the result.", false),
                 ("`^msg`", "Direct message user with list of commands.", false),

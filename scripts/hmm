@@ -1,0 +1,12 @@
+#!/bin/bash
+
+MUSIC="/mnt/ehdd2/Music/"
+case "$1" in
+    artists) echo "$(mpc list Artist | sed '/^\s*$/d' | wc -l)";;
+    albums) echo "$(mpc list Album | sed '/^\s*$/d' | wc -l)";;
+    songs) echo "$(mpc list Title | sed '/^\s*$/d' | wc -l)";;
+    files) echo "$(tree -a $MUSIC | tail -n1 | awk -F\  '{print $3}')";;
+    size) echo "$(du -hs $MUSIC | cut -c 1-4)B";;
+    amount) echo "$(w3m -dump https://libre.fm/user/phate6660/stats | grep Total | sed "s/[^0-9]//g")";;
+    status) echo "$(w3m -dump https://libre.fm/user/phate6660/ | grep "playing" | sed 's/×\ //g')";;
+esac

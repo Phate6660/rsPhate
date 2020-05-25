@@ -11,7 +11,7 @@ use std::{collections::HashMap, sync::Arc};
 // Load and use commands from src/commands/
 mod commands;
 use commands::{
-    about::*, date::*, iv::*, ls::*, math::*, msg::*, projects::*, quit::*, rng::*, rr::*,
+    about::*, date::*, hmm::*, iv::*, ls::*, math::*, msg::*, projects::*, quit::*, rng::*, rr::*,
     wipltrn::*, ww::*,
 };
 
@@ -65,7 +65,7 @@ impl EventHandler for Handler {
 struct General;
 
 #[group]
-#[commands(date, iv, math, projects, rng, rr, wipltrn, ww)]
+#[commands(date, hmm, iv, math, projects, rng, rr, wipltrn, ww)]
 struct Functions;
 
 fn main() {
