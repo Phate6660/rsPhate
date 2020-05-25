@@ -16,7 +16,7 @@ How to use:
 - `^about`: Bot will reply with pretty embed containing title and description of bot, as well as where to find the author (me).
 - `^date`: Bot will reply with current date and time in this format -- `06:30 AM | Thu 21, May of 2020`.
 - `^help {_,command,function}`: Without args, bot will give a generalized help. Specifying a command or function will explain it.
-- `^fortune`: Bot will reply with random fortune from `fortune-mod-mythical-linux` (repo is pinned to my profile if anyone is interested).
+- `^fortune`: Bot will reply with random fortune from `fortune-mod-mythical-linux` (repo is pinned to my profile if anyone is interested). (Note: Potentially NSFW and offensive fortunes are *enabled*, use at your own risk.
 - `^hmm`: How much music does Phate have?
 - `^iv SEARCH`: Bot will reply with an invidio link of the search query.*
 - `^math operation num num`: Bot will do math for you (basic add/sub/div/mul) and reply with the result.*
