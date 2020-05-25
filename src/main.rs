@@ -3,8 +3,8 @@ use serenity::{
     client::bridge::gateway::ShardManager,
     framework::standard::{
         help_commands,
-        macros::{group, help},
-        Args, CommandGroup, CommandResult, DispatchError, HelpOptions, StandardFramework,
+        macros::{check, group, help},
+        Args, CheckResult, CommandGroup, CommandOptions, CommandResult, HelpOptions, StandardFramework,
     },
     model::{event::ResumedEvent, gateway::Ready, id::UserId, prelude::Message},
     prelude::*,
@@ -170,11 +170,21 @@ fn main() {
             // reason or another. For example, when a user has exceeded a rate-limit or a command
             // can only be performed by the bot owner.
             .on_dispatch_error(|ctx, msg, error| {
-                if let DispatchError::Ratelimited(seconds) = error {
-                    let _ = msg.channel_id.say(
-                        &ctx.http,
-                        &format!("Try this again in {} seconds.", seconds),
-                    );
+                match error {
+                    CheckFailed => {
+                        let message = msg.reply(&ctx.http, "Owner check failed! I will ping you a hundredfold if you do that again!");
+                        match message {
+                            Ok(_) => {
+                                let _ = msg.react(&ctx, '🤬');
+                            }
+                            _ => {
+                                error!("Could not react to angry troll message!");
+                            }
+                        }
+                    }
+                    _ => {
+                        error!("Unhandled dispatch error!");
+                    }
                 }
             })
             // Set the help function
@@ -190,4 +200,24 @@ fn main() {
     if let Err(why) = client.start() {
         error!("Client error: {:?}", why);
     }
+}
+
+#[check]
+#[name = "Owner"]
+fn owner_check(_: &mut Context, msg: &Message, _: &mut Args, _: &CommandOptions) -> CheckResult {
+    // Replace 7 with your ID to make this check pass.
+    //
+    // `true` will convert into `CheckResult::Success`,
+    //
+    // `false` will convert into `CheckResult::Failure(Reason::Unknown)`,
+    //
+    // and if you want to pass a reason alongside failure you can do:
+    // `CheckResult::new_user("Lacked admin permission.")`,
+    //
+    // if you want to mark it as something you want to log only:
+    // `CheckResult::new_log("User lacked admin permission.")`,
+    //
+    // and if the check's failure origin is unknown you can mark it as such (same as using `false.into`):
+    // `CheckResult::new_unknown()`
+    (msg.author.id == 534379378432540675).into()
 }
