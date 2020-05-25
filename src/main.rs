@@ -56,7 +56,7 @@ impl EventHandler for Handler {
         use serenity::model::gateway::Activity;
         use serenity::model::user::OnlineStatus;
 
-        let activity = Activity::playing("^ls to view commands");
+        let activity = Activity::playing("^help for help");
         let status = OnlineStatus::Online;
 
         ctx.set_presence(Some(activity), status);
