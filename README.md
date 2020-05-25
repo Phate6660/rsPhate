@@ -23,7 +23,7 @@ How to use:
 - `^projects`: Bot willk reply with pretty embed containing links to other projects by the author.
 - `^rng min max`: Bot will generate a random number between min and max and reply with the result.
 - `^rr`: Bot will reply with a link (without a link preview) to Rick Astley's "Never Gonna Give You Up".
-- `^wipltrn`: Bot will reply with pretty embed containing music info and cover art.*
+- `^wipltrn`: Bot will reply with pretty embed containing music info and cover art of Phate's currently playing music.*
 - `^ww {apple,steam,systemd}`: Bot will reply with pretty embed explaining why the topic is bad.
 - `^quit`: Bot will reply with "Shutting down now!" and shut itself down directly after.
 
