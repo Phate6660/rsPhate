@@ -15,12 +15,11 @@ How to use:
 
 - `^about`: Bot will reply with pretty embed containing title and description of bot, as well as where to find the author (me).
 - `^date`: Bot will reply with current date and time in this format -- `06:30 AM | Thu 21, May of 2020`.
+- `^help {_,command,function}`: Without args, bot will give a generalized help. Specifying a command or function will explain it.
 - `^fortune`: Bot will reply with random fortune from `fortune-mod-mythical-linux` (repo is pinned to my profile if anyone is interested).
 - `^hmm`: How much music does Phate have?
 - `^iv SEARCH`: Bot will reply with an invidio link of the search query.*
-- `^ls`: Bot will reply with a pretty embed that lists and describes available commands.
 - `^math operation num num`: Bot will do math for you (basic add/sub/div/mul) and reply with the result.*
-- `^msg`: Direct message user with list of commands.
 - `^projects`: Bot willk reply with pretty embed containing links to other projects by the author.
 - `^rng min max`: Bot will generate a random number between min and max and reply with the result.
 - `^rr`: Bot will reply with a link (without a link preview) to Rick Astley's "Never Gonna Give You Up".

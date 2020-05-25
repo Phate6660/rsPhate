@@ -5,6 +5,7 @@ use serenity::{
 };
 
 #[command]
+#[description = "Bot will reply with \"Shutting down now!\" and shut itself down directly after."]
 fn quit(ctx: &mut Context, msg: &Message) -> CommandResult {
     if let Err(why) = msg.channel_id.say(&ctx.http, "Shutting down now!") {
         println!("Error sending message: {:?}", why);

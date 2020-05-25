@@ -6,6 +6,7 @@ use serenity::{
 use std::process::Command;
 
 #[command]
+#[description = "Display the date in format: `06:30 AM | Mon 25, May of 2020`."]
 fn date(ctx: &mut Context, msg: &Message) -> CommandResult {
     // `date` equals the output of the command `date +"%I:%M %p | %a %d, %b of %Y"`.
     let date = Command::new("date")

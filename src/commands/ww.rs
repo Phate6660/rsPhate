@@ -5,6 +5,7 @@ use serenity::{
 };
 
 #[command]
+#[description = "Bot will reply with pretty embed explaining why the topic is bad."]
 fn ww(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
     let arg = args.rest();
 

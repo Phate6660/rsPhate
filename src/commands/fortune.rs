@@ -7,6 +7,7 @@ use serenity::{
 use std::process::Command;
 
 #[command]
+#[description = "Bot will reply with random fortune from `fortune-mod-mythical-linux` (repo is pinned to my profile if anyone is interested)."]
 fn fortune(ctx: &mut Context, msg: &Message) -> CommandResult {
     let fortune = Command::new("fortune")
         .arg("mythical_linux")

@@ -6,6 +6,7 @@ use serenity::{
 };
 
 #[command]
+#[description = "Bot will generate a random number between min and max and reply with the result."]
 fn rng(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let min = args.single::<i64>()?; // First argument
     let max = args.single::<i64>()?; // Second argument

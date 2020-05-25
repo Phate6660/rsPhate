@@ -6,6 +6,7 @@ use serenity::{
 use std::process::Command;
 
 #[command]
+#[description = "How much music does Phate have?"]
 fn hmm(ctx: &mut Context, msg: &Message) -> CommandResult {
     let artists = Command::new("scripts/hmm")
         .arg("artists")

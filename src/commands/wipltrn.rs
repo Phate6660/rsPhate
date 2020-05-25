@@ -8,6 +8,7 @@ use std::path::Path;
 use std::process::Command;
 
 #[command]
+#[description = "Bot will reply with pretty embed containing current music info and cover art of what Phate is listening to."]
 fn wipltrn(ctx: &mut Context, msg: &Message) -> CommandResult {
     // `mus_title` = artist - title
     let mus_title = Command::new("sh")

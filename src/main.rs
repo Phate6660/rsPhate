@@ -1,18 +1,25 @@
 use log::{error, info};
 use serenity::{
     client::bridge::gateway::ShardManager,
-    framework::standard::{macros::group, DispatchError, StandardFramework},
-    model::{event::ResumedEvent, gateway::Ready},
+    framework::standard::{
+        help_commands,
+        macros::{group, help},
+        Args, CommandGroup, CommandResult, DispatchError, HelpOptions, StandardFramework,
+    },
+    model::{event::ResumedEvent, gateway::Ready, id::UserId, prelude::Message},
     prelude::*,
 };
 use std::env;
-use std::{collections::HashMap, sync::Arc};
+use std::{
+    collections::{HashMap, HashSet},
+    sync::Arc,
+};
 
 // Load and use commands from src/commands/
 mod commands;
 use commands::{
-    about::*, date::*, fortune::*, hmm::*, iv::*, ls::*, math::*, msg::*, projects::*, quit::*,
-    rng::*, rr::*, wipltrn::*, ww::*,
+    about::*, date::*, fortune::*, hmm::*, iv::*, math::*, projects::*, quit::*, rng::*, rr::*,
+    wipltrn::*, ww::*,
 };
 
 // A container type is created for inserting into the Client's `data`, which
@@ -60,17 +67,34 @@ impl EventHandler for Handler {
     }
 }
 
+// Groups
 #[group]
+#[description = "Functions for the bot that do not belong in any specific category."]
 #[commands(date, hmm, iv, fortune, rr, wipltrn, ww)]
 struct Functions;
 
 #[group]
-#[commands(about, ls, projects, msg, quit)]
+#[description = "Generalized functions for the bot."]
+#[commands(about, projects, quit)]
 struct General;
 
 #[group]
+#[description = "Functions that are related to number operations."]
 #[commands(math, rng)]
 struct Numbers;
+
+#[help]
+#[individual_command_tip = "If you want more information about a specific group or argument, just pass it as an argument."]
+fn my_help(
+    context: &mut Context,
+    msg: &Message,
+    args: Args,
+    help_options: &'static HelpOptions,
+    groups: &[&'static CommandGroup],
+    owners: HashSet<UserId>,
+) -> CommandResult {
+    help_commands::with_embeds(context, msg, args, help_options, groups, owners)
+}
 
 fn main() {
     // This will load the environment variables located at `./.env`, relative to the CWD.
@@ -153,6 +177,8 @@ fn main() {
                     );
                 }
             })
+            // Set the help function
+            .help(&MY_HELP)
             // The `#[group]` macro generates `static` instances of the options set for the group.
             // They're made in the pattern: `#name_GROUP` for the group instance and `#name_GROUP_OPTIONS`.
             // #name is turned all uppercase

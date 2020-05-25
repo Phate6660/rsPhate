@@ -5,6 +5,7 @@ use serenity::{
 };
 
 #[command]
+#[description = "Bot will reply with pretty embed containing title and description of bot, as well as where to find the author."]
 fn about(ctx: &mut Context, msg: &Message) -> CommandResult {
     let msg = msg.channel_id.send_message(&ctx.http, |m| {
         m.embed(|e| {

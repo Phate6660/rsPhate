@@ -5,6 +5,7 @@ use serenity::{
 };
 
 #[command]
+#[description = "Bot will do math for you (basic add/sub/div/mul) and reply with the result."]
 fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let operation = args.single::<String>()?; // First argument, ensure it's a string
 

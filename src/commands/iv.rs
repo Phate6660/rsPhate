@@ -6,6 +6,7 @@ use serenity::{
 use std::process::Command;
 
 #[command]
+#[description = "Bot will reply with an invidio link of the search query."]
 fn iv(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
     let args = args.rest();
 
