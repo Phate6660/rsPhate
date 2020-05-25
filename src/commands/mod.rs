@@ -3,6 +3,7 @@
 // (Pssst, don't forget to `use` them as well.)
 pub mod about;
 pub mod date;
+pub mod fortune;
 pub mod hmm;
 pub mod iv;
 pub mod ls;

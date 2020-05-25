@@ -15,6 +15,7 @@ How to use:
 
 - `^about`: Bot will reply with pretty embed containing title and description of bot, as well as where to find the author (me).
 - `^date`: Bot will reply with current date and time in this format -- `06:30 AM | Thu 21, May of 2020`.
+- `^fortune`: Bot will reply with random fortune from `fortune-mod-mythical-linux` (repo is pinned to my profile if anyone is interested).
 - `^hmm`: How much music does Phate have?
 - `^iv SEARCH`: Bot will reply with an invidio link of the search query.*
 - `^ls`: Bot will reply with a pretty embed that lists and describes available commands.

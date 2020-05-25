@@ -11,8 +11,8 @@ use std::{collections::HashMap, sync::Arc};
 // Load and use commands from src/commands/
 mod commands;
 use commands::{
-    about::*, date::*, hmm::*, iv::*, ls::*, math::*, msg::*, projects::*, quit::*, rng::*, rr::*,
-    wipltrn::*, ww::*,
+    about::*, date::*, fortune::*, hmm::*, iv::*, ls::*, math::*, msg::*, projects::*, quit::*,
+    rng::*, rr::*, wipltrn::*, ww::*,
 };
 
 // A container type is created for inserting into the Client's `data`, which
@@ -61,12 +61,16 @@ impl EventHandler for Handler {
 }
 
 #[group]
-#[commands(about, ls, msg, quit)]
+#[commands(date, hmm, iv, fortune, rr, wipltrn, ww)]
+struct Functions;
+
+#[group]
+#[commands(about, ls, projects, msg, quit)]
 struct General;
 
 #[group]
-#[commands(date, hmm, iv, math, projects, rng, rr, wipltrn, ww)]
-struct Functions;
+#[commands(math, rng)]
+struct Numbers;
 
 fn main() {
     // This will load the environment variables located at `./.env`, relative to the CWD.
@@ -152,8 +156,9 @@ fn main() {
             // The `#[group]` macro generates `static` instances of the options set for the group.
             // They're made in the pattern: `#name_GROUP` for the group instance and `#name_GROUP_OPTIONS`.
             // #name is turned all uppercase
+            .group(&FUNCTIONS_GROUP)
             .group(&GENERAL_GROUP)
-            .group(&FUNCTIONS_GROUP),
+            .group(&NUMBERS_GROUP),
     );
 
     if let Err(why) = client.start() {

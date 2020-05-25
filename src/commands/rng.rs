@@ -7,8 +7,8 @@ use serenity::{
 
 #[command]
 fn rng(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
-    let min = args.single::<u32>()?; // First argument
-    let max = args.single::<u32>()?; // Second argument
+    let min = args.single::<i64>()?; // First argument
+    let max = args.single::<i64>()?; // Second argument
 
     let random_number = rand::thread_rng().gen_range(min, max); // generate a random number between min and max
 
