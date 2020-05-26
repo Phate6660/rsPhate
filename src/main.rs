@@ -86,7 +86,7 @@ struct General;
 struct Numbers;
 
 #[help]
-#[individual_command_tip = "If you want more information about a specific group or argument, just pass it as an argument."]
+#[individual_command_tip = "If you want more information about a specific group or command, just pass it as an argument."]
 fn my_help(
     context: &mut Context,
     msg: &Message,
