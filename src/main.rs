@@ -8,7 +8,7 @@ use serenity::{
         DispatchError::CheckFailed,
         HelpOptions, StandardFramework,
     },
-    model::{event::ResumedEvent, gateway::Ready, id::{EmojiId, UserId}, prelude::Message},
+    model::{event::ResumedEvent, gateway::Ready, id::UserId, prelude::Message},
     prelude::*,
 };
 use std::env;
@@ -23,15 +23,6 @@ use commands::{
     about::*, date::*, fortune::*, git::*, hmm::*, iv::*, math::*, owo::*, projects::*, quit::*, rng::*,
     rr::*, wipltrn::*, ww::*,
 };
-
-pub enum ReactionType {
-    Emoji {
-        animated: bool,
-        id: EmojiId,
-        name: String,
-        require_colons: bool,
-    },
-}
 
 // A container type is created for inserting into the Client's `data`, which
 // allows for data to be accessible across all events and framework commands, or
