@@ -4,7 +4,7 @@ use serenity::{
     framework::standard::{
         help_commands,
         macros::{check, group, help},
-        Args, CheckResult, CommandGroup, CommandOptions, CommandResult, HelpOptions, StandardFramework,
+        Args, CheckResult, CommandGroup, CommandOptions, CommandResult, DispatchError::CheckFailed, HelpOptions, StandardFramework,
     },
     model::{event::ResumedEvent, gateway::Ready, id::UserId, prelude::Message},
     prelude::*,
@@ -171,7 +171,7 @@ fn main() {
             // can only be performed by the bot owner.
             .on_dispatch_error(|ctx, msg, error| {
                 match error {
-                    CheckFailed => {
+                    CheckFailed(Owner, owner_check) => {
                         let message = msg.reply(&ctx.http, "Owner check failed! I will ping you a hundredfold if you do that again!");
                         match message {
                             Ok(_) => {
