@@ -8,7 +8,7 @@ use serenity::{
         DispatchError::CheckFailed,
         HelpOptions, StandardFramework,
     },
-    model::{event::ResumedEvent, gateway::Ready, id::UserId, prelude::Message},
+    model::{event::ResumedEvent, gateway::Ready, id::{EmojiId, UserId}, prelude::Message},
     prelude::*,
 };
 use std::env;
@@ -23,6 +23,15 @@ use commands::{
     about::*, date::*, fortune::*, git::*, hmm::*, iv::*, math::*, owo::*, projects::*, quit::*, rng::*,
     rr::*, wipltrn::*, ww::*,
 };
+
+pub enum ReactionType {
+    Emoji {
+        animated: bool,
+        id: EmojiId,
+        name: String,
+        require_colons: bool,
+    },
+}
 
 // A container type is created for inserting into the Client's `data`, which
 // allows for data to be accessible across all events and framework commands, or
@@ -183,18 +192,10 @@ fn main() {
             // can only be performed by the bot owner.
             .on_dispatch_error(|ctx, msg, error| match error {
                 CheckFailed(Owner, owner_check) => {
-                    let message = msg.reply(
+                    msg.reply(
                         &ctx.http,
-                        "Owner check failed! I will ping you a hundredfold if you do that again!",
+                        "Owner check failed! I will ping you a hundredfold if you do that again! <:sadgry:676458405342216195>",
                     );
-                    match message {
-                        Ok(_) => {
-                            let _ = msg.react(&ctx, '🤬');
-                        }
-                        _ => {
-                            error!("Could not react to angry troll message!");
-                        }
-                    }
                 }
                 _ => {
                     error!("Unhandled dispatch error!");

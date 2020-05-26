@@ -18,13 +18,30 @@ fn rng(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     }
 
     let (min, max) = min_and_max(args);
+    let message: String = "Could not generate a random number, please try again.".to_string();
     if min == 9223372036854775807 {
-        msg.channel_id.say(&ctx.http, "The min value supplied is invalid.");
-        msg.channel_id.say(&ctx.http, "Could not generate a random number, please try again.");
+        let message_specific: String = "The min value supplied is invalid.".to_string();
+        error!("{}", message_specific);
+        msg.channel_id.say(&ctx.http, message_specific);
+        msg.channel_id.say(&ctx.http, message);
         return Ok(())
     } else if max == 9223372036854775807 {
-        msg.channel_id.say(&ctx.http, "The max value supplied is invalid.");
-        msg.channel_id.say(&ctx.http, "Could not generate a random number, please try again.");
+        let message_specific: String = "The max value supplied is invalid.".to_string();
+        error!("{}", message_specific);
+        msg.channel_id.say(&ctx.http, message_specific);
+        msg.channel_id.say(&ctx.http, message);
+        return Ok(())
+    } else if min == max {
+        let message_specific: String = "The min value must not be equal to, or greater than, the max value.".to_string();
+        error!("{}", message_specific);
+        msg.channel_id.say(&ctx.http, message_specific);
+        msg.channel_id.say(&ctx.http, message);
+        return Ok(())
+    } else if min > max {
+        let message_specific: String = "The min value must be lower than the max value.".to_string();
+        error!("{}", message_specific);
+        msg.channel_id.say(&ctx.http, message_specific);
+        msg.channel_id.say(&ctx.http, message);
         return Ok(())
     }
     
