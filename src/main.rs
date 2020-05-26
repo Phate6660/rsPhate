@@ -20,8 +20,8 @@ use std::{
 // Load and use commands from src/commands/
 mod commands;
 use commands::{
-    about::*, date::*, fortune::*, hmm::*, iv::*, math::*, owo::*, projects::*, quit::*, rng::*, rr::*,
-    wipltrn::*, ww::*,
+    about::*, date::*, fortune::*, hmm::*, iv::*, math::*, owo::*, projects::*, quit::*, rng::*,
+    rr::*, wipltrn::*, ww::*,
 };
 
 // A container type is created for inserting into the Client's `data`, which
@@ -165,8 +165,18 @@ fn main() {
             })
             // Set a function that's called whenever an attempted command-call's
             // command could not be found.
-            .unrecognised_command(|_, _, unknown_command_name| {
-                error!("Could not find command named '{}'", unknown_command_name);
+            .unrecognised_command(|ctx, msg, unknown_command_name| {
+                error!("Invalid command: '{}'", unknown_command_name);
+                let msg = msg.channel_id.send_message(&ctx.http, |m| {
+                    m.embed(|e| {
+                        e.description("Invalid command, please use `^help` to check for valid commands.");
+                        e
+                    })
+                });
+
+                if let Err(why) = msg {
+                     println!("Error sending message: {:?}", why);
+                }
             })
             // Set a function that's called whenever a command's execution didn't complete for one
             // reason or another. For example, when a user has exceeded a rate-limit or a command
