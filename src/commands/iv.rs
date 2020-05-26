@@ -7,6 +7,9 @@ use std::process::Command;
 
 #[command]
 #[description = "Bot will reply with an invidio link of the search query."]
+#[usage = "search"]
+#[example = "mindless self indulgence unsociable"]
+#[num_args(1)]
 fn iv(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
     let args = args.rest();
 

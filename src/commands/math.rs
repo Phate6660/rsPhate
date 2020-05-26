@@ -6,6 +6,12 @@ use serenity::{
 
 #[command]
 #[description = "Bot will do math for you (basic add/sub/div/mul) and reply with the result."]
+#[usage = "operation num num"]
+#[example = "multiply 2 1"]
+#[example = "divide 2 1"]
+#[example = "add 1 1"]
+#[example = "subtract 3 1"]
+#[num_args(3)]
 fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let operation = args.single::<String>()?; // First argument, ensure it's a string
 

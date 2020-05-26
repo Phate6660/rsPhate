@@ -4,7 +4,9 @@ use serenity::{
     framework::standard::{
         help_commands,
         macros::{check, group, help},
-        Args, CheckResult, CommandGroup, CommandOptions, CommandResult, DispatchError::CheckFailed, HelpOptions, StandardFramework,
+        Args, CheckResult, CommandGroup, CommandOptions, CommandResult,
+        DispatchError::CheckFailed,
+        HelpOptions, StandardFramework,
     },
     model::{event::ResumedEvent, gateway::Ready, id::UserId, prelude::Message},
     prelude::*,
@@ -169,22 +171,23 @@ fn main() {
             // Set a function that's called whenever a command's execution didn't complete for one
             // reason or another. For example, when a user has exceeded a rate-limit or a command
             // can only be performed by the bot owner.
-            .on_dispatch_error(|ctx, msg, error| {
-                match error {
-                    CheckFailed(Owner, owner_check) => {
-                        let message = msg.reply(&ctx.http, "Owner check failed! I will ping you a hundredfold if you do that again!");
-                        match message {
-                            Ok(_) => {
-                                let _ = msg.react(&ctx, '🤬');
-                            }
-                            _ => {
-                                error!("Could not react to angry troll message!");
-                            }
+            .on_dispatch_error(|ctx, msg, error| match error {
+                CheckFailed(Owner, owner_check) => {
+                    let message = msg.reply(
+                        &ctx.http,
+                        "Owner check failed! I will ping you a hundredfold if you do that again!",
+                    );
+                    match message {
+                        Ok(_) => {
+                            let _ = msg.react(&ctx, '🤬');
+                        }
+                        _ => {
+                            error!("Could not react to angry troll message!");
                         }
                     }
-                    _ => {
-                        error!("Unhandled dispatch error!");
-                    }
+                }
+                _ => {
+                    error!("Unhandled dispatch error!");
                 }
             })
             // Set the help function
