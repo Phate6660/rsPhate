@@ -1,3 +1,4 @@
+use log::error;
 use serenity::{
     framework::standard::{macros::command, Args, CommandResult},
     model::channel::Message,
@@ -27,9 +28,7 @@ fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
                 first_number, second_number, why
             );
         }
-    }
-
-    if operation == "divide" {
+    } else if operation == "divide" {
         let first_number = args.single::<f64>()?; // Second argument
         let second_number = args.single::<f64>()?; // Third argument
 
@@ -41,9 +40,7 @@ fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
                 first_number, second_number, why
             );
         }
-    }
-
-    if operation == "add" {
+    } else if operation == "add" {
         let first_number = args.single::<f64>()?; // Second argument
         let second_number = args.single::<f64>()?; // Third argument
 
@@ -55,9 +52,7 @@ fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
                 first_number, second_number, why
             );
         }
-    }
-
-    if operation == "subtract" {
+    } else if operation == "subtract" {
         let first_number = args.single::<f64>()?; // Second argument
         let second_number = args.single::<f64>()?; // Third argument
 
@@ -68,6 +63,12 @@ fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
                 "Err sending subtraction of of {} and {}: {:?}",
                 first_number, second_number, why
             );
+        }
+    } else {
+        let message: String = "Unknown math operation or user error has occured, please try again.".to_string();
+        error!("{}", message);
+        if let Err(why) = msg.channel_id.say(&ctx.http, message) {
+            error!("Could not push error message because: {}", why);
         }
     }
 

@@ -4,6 +4,7 @@
 pub mod about;
 pub mod date;
 pub mod fortune;
+pub mod git;
 pub mod hmm;
 pub mod iv;
 pub mod math;
