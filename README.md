@@ -20,6 +20,7 @@ How to use:
 - `^hmm`: How much music does Phate have?
 - `^iv SEARCH`: Bot will reply with an invidio link of the search query.*
 - `^math operation num num`: Bot will do math for you (basic add/sub/div/mul) and reply with the result.*
+- `^owo input`: Bot will reply with OwO-ified input.
 - `^projects`: Bot willk reply with pretty embed containing links to other projects by the author.
 - `^rng min max`: Bot will generate a random number between min and max and reply with the result.
 - `^rr`: Bot will reply with a link (without a link preview) to Rick Astley's "Never Gonna Give You Up".

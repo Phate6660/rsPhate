@@ -7,6 +7,7 @@ pub mod fortune;
 pub mod hmm;
 pub mod iv;
 pub mod math;
+pub mod owo;
 pub mod projects;
 pub mod quit;
 pub mod rng;

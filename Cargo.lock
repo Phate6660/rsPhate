@@ -698,6 +698,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77af24da69f9d9341038eba93a073b1fdaaa1b788221b00a69bce9e762cb32de"
 
 [[package]]
+name = "owoify"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f5d5373685d13f2b6080231760ae4e1ca37161f129e1eb2393ea9028ffa49339"
+dependencies = [
+ "rand",
+ "regex",
+]
+
+[[package]]
 name = "parking_lot"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -927,6 +937,7 @@ dependencies = [
  "env_logger",
  "kankyo",
  "log",
+ "owoify",
  "rand",
  "serenity",
 ]
