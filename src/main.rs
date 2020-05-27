@@ -20,8 +20,8 @@ use std::{
 // Load and use commands from src/commands/
 mod commands;
 use commands::{
-    about::*, date::*, fortune::*, git::*, hmm::*, iv::*, math::*, owo::*, projects::*, quit::*, rng::*,
-    rr::*, wipltrn::*, ww::*,
+    about::*, date::*, fortune::*, git::*, hmm::*, iv::*, math::*, owo::*, projects::*, quit::*,
+    rng::*, rr::*, wipltrn::*, ww::*,
 };
 
 // A container type is created for inserting into the Client's `data`, which
@@ -57,7 +57,7 @@ impl EventHandler for Handler {
     fn ready(&self, ctx: Context, ready: Ready) {
         use serenity::model::gateway::Activity;
         use serenity::model::user::OnlineStatus;
-        
+
         let activity = Activity::playing("^help for help");
         let status = OnlineStatus::Online;
 
@@ -196,7 +196,7 @@ fn main() {
                         });
                         m
                     });
-                
+
                     if let Err(why) = message {
                         error!("Error sending message: {:?}", why);
                     }
@@ -221,7 +221,7 @@ fn main() {
                         });
                         m
                     });
-                
+
                     if let Err(why) = message {
                         error!("Error sending message: {:?}", why);
                     }

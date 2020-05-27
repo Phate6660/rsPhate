@@ -20,7 +20,7 @@ fn about(ctx: &mut Context, msg: &Message) -> CommandResult {
         Some(u) => u,
         None => bot_user.default_avatar_url(),
     };
-    
+
     let msg = msg.channel_id.send_message(&ctx.http, |m| {
         m.embed(|e| {
             e.title("`rsPhate`");
