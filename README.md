@@ -28,6 +28,11 @@ How to use:
 - `^wipltrn`: Bot will reply with pretty embed containing music info and cover art of Phate's currently playing music.*
 - `^ww {apple,steam,systemd}`: Bot will reply with pretty embed explaining why the topic is bad.
 
+## Automated functions
+
+- If a message contains "youtube.com", react with disappointed face and send pretty embed full of info on invidio.us.
+- If a message contains "twitter.com", do the same as with messages containing "youtube.com" except the embed pertains to nitter.net.
+
 ## Bot structure
 
 - `.env`: For environmental variables.
