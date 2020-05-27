@@ -16,7 +16,7 @@ How to use:
 - `^about`: Bot will reply with pretty embed containing title and description of bot, as well as where to find the author (me).
 - `^date`: Bot will reply with current date and time in this format -- `06:30 AM | Thu 21, May of 2020`.
 - `^help {_,command,function}`: Without args, bot will give a generalized help. Specifying a command or function will explain it.
-- `^fortune`: Bot will reply with random fortune from `fortune-mod-mythical-linux` (repo is pinned to my profile if anyone is interested). (Note: Potentially NSFW and offensive fortunes are *enabled*, use at your own risk.)
+- `^fortune`: Bot will reply with random fortune from `fortune-mod-mythical-linux` (repo is pinned to my profile if anyone is interested).*
 - `^git site owner/repo`: Bot will reply with full link to repo.
 - `^hmm`: How much music does Phate have?
 - `^iv SEARCH`: Bot will reply with an invidio link of the search query.*
@@ -43,6 +43,7 @@ How to use:
 
 ## Notes
 
+- `fortune`: Potentially NSFW and offensive fortunes are *enabled*, use at your own risk.
 - `math`: Operation refers to `multiply`/`divide`/`add`/`subtract`. Example: `^math add 1 1` will make the bot reply with `2`.
 - `iv`: Requires `youtube-dl`. Example: `^iv type o negative dead again` will cause the bot to reply with an invidio link to the full album.
 - `wipltrn`: Requires `mpc`, and for the cover art to be present at `/tmp/cover.png`.
