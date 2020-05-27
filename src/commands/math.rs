@@ -23,20 +23,12 @@ fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
             let first_number = args.single::<i64>()?; // Second argument
             let second_number = args.single::<i64>()?; // Third argument
 
-            if let output = first_number * second_number {
-                if let Err(why) = msg.channel_id.say(&ctx.http, &output.to_string()) {
-                    error!(
-                        "Err sending product of {:?} and {:?}: {:?}",
-                        first_number, second_number, why
-                    );
-                }
-            } else {
+            let output = first_number * second_number;
+            if let Err(why) = msg.channel_id.say(&ctx.http, &output.to_string()) {
                 error!(
-                    "Err multiplying {:?} and {:?}.",
-                    first_number, second_number
+                    "Err sending product of {:?} and {:?}: {:?}",
+                    first_number, second_number, why
                 );
-                msg.channel_id
-                    .say(&ctx.http, "There was an error while multiplying.");
             }
         }
         "divide" => {
@@ -44,17 +36,12 @@ fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
             let first_number = args.single::<i64>()?; // Second argument
             let second_number = args.single::<i64>()?; // Third argument
 
-            if let output = first_number / second_number {
-                if let Err(why) = msg.channel_id.say(&ctx.http, &output.to_string()) {
-                    error!(
-                        "Err sending quotient of {:?} divided by {:?}: {:?}",
-                        first_number, second_number, why
-                    );
-                }
-            } else {
-                error!("Err dividing {} by {}.", first_number, second_number);
-                msg.channel_id
-                    .say(&ctx.http, "There was an error while dividing.");
+            let output = first_number / second_number;
+            if let Err(why) = msg.channel_id.say(&ctx.http, &output.to_string()) {
+                error!(
+                    "Err sending quotient of {:?} divided by {:?}: {:?}",
+                    first_number, second_number, why
+                );
             }
         }
         "add" => {
@@ -62,17 +49,12 @@ fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
             let first_number = args.single::<i64>()?; // Second argument
             let second_number = args.single::<i64>()?; // Third argument
 
-            if let output = first_number + second_number {
-                if let Err(why) = msg.channel_id.say(&ctx.http, &output.to_string()) {
-                    error!(
-                        "Err sending addition of {:?} by {:?}: {:?}",
-                        first_number, second_number, why
-                    );
-                }
-            } else {
-                error!("Err adding {} and {}.", second_number, first_number);
-                msg.channel_id
-                    .say(&ctx.http, "There was an error while adding.");
+            let output = first_number + second_number;
+            if let Err(why) = msg.channel_id.say(&ctx.http, &output.to_string()) {
+                error!(
+                    "Err sending addition of {:?} by {:?}: {:?}",
+                    first_number, second_number, why
+                );
             }
         }
         "subtract" => {
@@ -80,17 +62,12 @@ fn math(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
             let first_number = args.single::<i64>()?; // Second argument
             let second_number = args.single::<i64>()?; // Third argument
 
-            if let output = first_number - second_number {
-                if let Err(why) = msg.channel_id.say(&ctx.http, &output.to_string()) {
-                    error!(
-                        "Err sending subtraction of {:?} by {:?}: {:?}",
-                        first_number, second_number, why
-                    );
-                }
-            } else {
-                error!("Err subtracting {} from {}.", second_number, first_number);
-                msg.channel_id
-                    .say(&ctx.http, "There was an error while subtracting.");
+            let output = first_number - second_number;
+            if let Err(why) = msg.channel_id.say(&ctx.http, &output.to_string()) {
+                error!(
+                    "Err sending subtraction of {:?} by {:?}: {:?}",
+                    first_number, second_number, why
+                );
             }
         }
         _ => {
