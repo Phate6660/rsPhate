@@ -9,9 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
   steps:
-    - name: Discord message
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.https://discord.com/api/webhooks/715298085453955112/R9ltwb_lz91ZCsGDvAjNB9v2BOdKwDfA1RhELghcihzD33pijbhtl3QnpZthLYOWIe4m }}
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'OwO, it looks like Phate-senpai pushed a new commit.'
+    name: Discord message
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.https://discord.com/api/webhooks/715298085453955112/R9ltwb_lz91ZCsGDvAjNB9v2BOdKwDfA1RhELghcihzD33pijbhtl3QnpZthLYOWIe4m }}
+    uses: Ilshidur/action-discord@master
+    with:
+      args: 'OwO, it looks like Phate-senpai pushed a new commit.'
