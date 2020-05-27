@@ -8,7 +8,7 @@ use serenity::{
         DispatchError::CheckFailed,
         HelpOptions, StandardFramework,
     },
-    model::{event::ResumedEvent, gateway::Ready, id::UserId, prelude::Message},
+    model::{gateway::Ready, id::UserId, prelude::Message},
     prelude::*,
 };
 use std::env;
@@ -57,9 +57,8 @@ impl EventHandler for Handler {
     fn ready(&self, ctx: Context, ready: Ready) {
         use serenity::model::gateway::Activity;
         use serenity::model::user::OnlineStatus;
-
-        let activity = Activity::streaming("^help for help", "[Source Code](https://github.com/Phate6660/rsPhate)");
-        // let activity = Activity::playing("^help for help");
+        
+        let activity = Activity::playing("^help for help");
         let status = OnlineStatus::Online;
 
         ctx.set_presence(Some(activity), status);
