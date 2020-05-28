@@ -1,4 +1,4 @@
-use log::error;
+use log::{error, info};
 use serenity::{
     framework::standard::{macros::command, Args, CommandResult},
     model::channel::Message,
@@ -17,23 +17,20 @@ fn git(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let repo = args.single::<String>()?;
     let match_site = site.as_str();
 
+    // Log what was supplied
+    info!("site: Git{}, owner/repo: {}", site, repo);
+
     // Match for site to create message.
     let message: String = match match_site {
-        "hub" => {
-            MessageBuilder::new()
-                .push("https://github.com/")
-                .push(repo)
-                .build()
-        },
-        "lab" => {
-            MessageBuilder::new()
-                .push("https://gitlab.com/")
-                .push(repo)
-                .build()
-        },
-        _ => {
-            "Could not generate a full link, please try again.".to_string()
-        },
+        "hub" => MessageBuilder::new()
+            .push("https://github.com/")
+            .push(repo)
+            .build(),
+        "lab" => MessageBuilder::new()
+            .push("https://gitlab.com/")
+            .push(repo)
+            .build(),
+        _ => "Could not generate a full link, please try again.".to_string(),
     };
 
     if let Err(why) = msg.channel_id.say(&ctx.http, &message) {

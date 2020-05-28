@@ -7,6 +7,7 @@ use serenity::{
 #[command]
 #[description = "Bot will reply with pretty embed containing title and description of bot, as well as where to find the author."]
 fn about(ctx: &mut Context, msg: &Message) -> CommandResult {
+    // Obtain Bot's profile pic: cache -> current info -> bot user -> bot icon
     let cache_http = &ctx.http;
     let current_info = match cache_http.get_current_application_info() {
         Ok(c) => c,
