@@ -1,8 +1,5 @@
 use log::{error, info};
-use serenity::{
-    model::channel::Message,
-    prelude::*,
-};
+use serenity::{model::channel::Message, prelude::*};
 
 // If "youtube.com" is found, react with disappointed and message a pretty embed about invidio.
 // Do the same for "twitter.com", except the embed pertains to Nitter.
