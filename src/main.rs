@@ -11,9 +11,9 @@ use serenity::{
     model::{gateway::Ready, id::UserId, prelude::Message},
     prelude::*,
 };
-use std::env;
 use std::{
     collections::{HashMap, HashSet},
+    env,
     sync::Arc,
 };
 
