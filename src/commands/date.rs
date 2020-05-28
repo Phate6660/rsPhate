@@ -1,26 +1,18 @@
+use date_time::{date_tuple::DateTuple, time_tuple::TimeTuple};
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     model::channel::Message,
     prelude::*,
 };
-use std::process::Command;
 
 #[command]
 #[description = "Display the date in format: `06:30 AM | Mon 25, May of 2020`."]
 fn date(ctx: &mut Context, msg: &Message) -> CommandResult {
-    // `date` equals the output of the command `date +"%I:%M %p | %a %d, %b of %Y"`.
-    let date = Command::new("date")
-        .arg("+`%I:%M %p | %a %d, %b of %Y`")
-        .output()
-        .expect("Couldn't obtain current date and time.");
-    // Sending a message can fail, due to a network error, an
-    // authentication error, or lack of permissions to post in the
-    // channel, so log to stdout when some error happens, with a
-    // description of it.
-    if let Err(why) = msg
-        .channel_id
-        .say(&ctx.http, String::from_utf8_lossy(&date.stdout))
-    {
+    let date = DateTuple::today().to_readable_string();
+    let time = TimeTuple::now().to_hhmm_string();
+    let date = time + &" | ".to_string() + &date;
+
+    if let Err(why) = msg.channel_id.say(&ctx.http, date) {
         println!("Error sending message: {:?}", why);
     }
 

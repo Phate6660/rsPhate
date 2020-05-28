@@ -187,6 +187,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "date_time"
+version = "2.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c39b8c36b4f30a5dbb772fd5f15c01c14dfa80795d757da0f5f42807557fa52"
+dependencies = [
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
 name = "digest"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -934,6 +944,7 @@ dependencies = [
 name = "rsPhate"
 version = "0.1.0"
 dependencies = [
+ "date_time",
  "env_logger",
  "kankyo",
  "log",
