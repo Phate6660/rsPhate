@@ -17,16 +17,16 @@ use std::{
     sync::Arc,
 };
 
-// Load yt_tw_check function
-mod yt_tw_check;
-use yt_tw_check::yt_tw_check;
-
 // Load and use commands from src/commands/
 mod commands;
 use commands::{
     about::*, date::*, fortune::*, git::*, hmm::*, iv::*, math::*, owo::*, projects::*, quit::*,
     rng::*, rr::*, wipltrn::*, ww::*,
 };
+
+// Load and use extra functions from src/functions/
+mod functions;
+use functions::{prefix_space_check::prefix_space_check, yt_tw_check::yt_tw_check};
 
 // A container type is created for inserting into the Client's `data`, which
 // allows for data to be accessible across all events and framework commands, or
@@ -142,7 +142,7 @@ fn main() {
             // executed. Instead, the `#[check]` macro gives you this functionality.
             .before(|ctx, msg, command_name| {
                 info!(
-                    "Got command '{}' by user '{}'",
+                    "command: '{}', user: '{}'",
                     command_name, msg.author.name
                 );
 
@@ -167,21 +167,7 @@ fn main() {
             // Set a function that's called whenever an attempted command-call's
             // command could not be found.
             .unrecognised_command(|ctx, msg, unknown_command_name| {
-                if msg.content.contains("^ ") {
-                    info!("There was a space after the prefix, assuming the bot was not intended to be used.");
-                } else {
-                    error!("Invalid command: '{}'", unknown_command_name);
-                    let msg = msg.channel_id.send_message(&ctx.http, |m| {
-                        m.embed(|e| {
-                            e.description("Invalid command, please use `^help` to check for valid commands.");
-                            e
-                        })
-                    });
-                    
-                    if let Err(why) = msg {
-                         error!("Error sending message: {:?}", why);
-                    }
-                }
+                prefix_space_check(ctx, msg, unknown_command_name);
             })
             .normal_message(|ctx, msg| {
                 yt_tw_check(ctx, msg);
