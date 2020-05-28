@@ -167,16 +167,20 @@ fn main() {
             // Set a function that's called whenever an attempted command-call's
             // command could not be found.
             .unrecognised_command(|ctx, msg, unknown_command_name| {
-                error!("Invalid command: '{}'", unknown_command_name);
-                let msg = msg.channel_id.send_message(&ctx.http, |m| {
-                    m.embed(|e| {
-                        e.description("Invalid command, please use `^help` to check for valid commands.");
-                        e
-                    })
-                });
-
-                if let Err(why) = msg {
-                     error!("Error sending message: {:?}", why);
+                if msg.content.contains("^ ") {
+                    info!("There was a space after the prefix, assuming the bot was not intended to be used.");
+                } else {
+                    error!("Invalid command: '{}'", unknown_command_name);
+                    let msg = msg.channel_id.send_message(&ctx.http, |m| {
+                        m.embed(|e| {
+                            e.description("Invalid command, please use `^help` to check for valid commands.");
+                            e
+                        })
+                    });
+                    
+                    if let Err(why) = msg {
+                         error!("Error sending message: {:?}", why);
+                    }
                 }
             })
             .normal_message(|ctx, msg| {
