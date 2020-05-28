@@ -176,6 +176,8 @@ fn main() {
                 }
             })
             .normal_message(|ctx, msg| {
+                // If "youtube.com" is found, react with disappointed and message a pretty embed about invidio.
+                // Do the same for "twitter.com", except the embed pertains to Nitter.
                 let sent_message = &msg.content;
                 if sent_message.contains("youtube.com") {
                     info!("YouTube link was found!");

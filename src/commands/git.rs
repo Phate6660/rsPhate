@@ -15,29 +15,29 @@ use serenity::{
 fn git(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let site = args.single::<String>()?;
     let repo = args.single::<String>()?;
+    let match_site = site.as_str();
 
-    if site == "hub" {
-        let message = MessageBuilder::new()
-            .push("https://github.com/")
-            .push(repo)
-            .build();
-        if let Err(why) = msg.channel_id.say(&ctx.http, &message) {
-            error!("Could not push full Github link because: {}", why);
-        }
-    } else if site == "lab" {
-        let message = MessageBuilder::new()
-            .push("https://gitlab.com/")
-            .push(repo)
-            .build();
-        if let Err(why) = msg.channel_id.say(&ctx.http, &message) {
-            error!("Could not push full Github link because: {}", why);
-        }
-    } else {
-        let message: String = "Unknown git site or user error has occured, please try again.".to_string();
-        error!("{}", message);
-        if let Err(why) = msg.channel_id.say(&ctx.http, message) {
-            error!("Could not push error message because: {}", why);
-        }
+    // Match for site to create message.
+    let message: String = match match_site {
+        "hub" => {
+            MessageBuilder::new()
+                .push("https://github.com/")
+                .push(repo)
+                .build()
+        },
+        "lab" => {
+            MessageBuilder::new()
+                .push("https://gitlab.com/")
+                .push(repo)
+                .build()
+        },
+        _ => {
+            "Could not generate a full link, please try again.".to_string()
+        },
+    };
+
+    if let Err(why) = msg.channel_id.say(&ctx.http, &message) {
+        error!("Could not push full Git* link because: {}", why);
     }
 
     Ok(())
