@@ -1,5 +1,0 @@
-#!/bin/bash
-
-video="$1"
-ID="$(youtube-dl --get-id ytsearch:"$video")"
-echo "https://invidio.us/watch?v=$ID&local=1"
