@@ -6,7 +6,7 @@ use serenity::{model::channel::Message, prelude::*};
 pub fn yt_tw_check(ctx: &mut Context, msg: &Message) {
     let sent_message = &msg.content;
     if sent_message.contains("youtube.com") {
-        info!("YouTube link was found!");
+        info!("YouTube link was found! It was sent by: {}", msg.author.name);
         msg.react(&ctx.http, '😞');
         let message = msg.channel_id.send_message(&ctx.http, |m| {
             m.embed(|e| {
@@ -30,7 +30,7 @@ pub fn yt_tw_check(ctx: &mut Context, msg: &Message) {
         }
     }
     if sent_message.contains("twitter.com") {
-        info!("Twitter link was found!");
+        info!("Twitter link was found! It was sent by: {}", msg.author.name);
         msg.react(&ctx.http, '😞');
         let message = msg.channel_id.send_message(&ctx.http, |m| {
             m.embed(|e| {
