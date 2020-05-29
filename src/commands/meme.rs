@@ -10,22 +10,24 @@ use std::{fs, io::Write, path::Path};
 
 #[command]
 #[description = "Bot will generate a meme based on input."]
-#[usage = "position text"]
-#[example = "bottom ah yes, enslaved meme generator"]
+#[usage = "top_text bottom_text"]
+#[example = "ah yes,enslaved meme generator"]
 fn meme(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
-    let position = args.single::<String>()?;
-    let meme = args.rest();
-    let pos = if position == "top" {
-        rofl::VAlign::Top
-    } else  {
-        rofl::VAlign::Bottom
+    let meme = args.single::<String>()?;
+    let meme2 = args.single::<String>()?;
+
+    let pos = if meme2.is_empty() {
+        vec![rofl::Caption::text_at(rofl::VAlign::Top, meme),]
+    } else {
+        vec![
+            rofl::Caption::text_at(rofl::VAlign::Top, meme),
+            rofl::Caption::text_at(rofl::VAlign::Bottom, meme2,)
+        ]
     };
     let engine = rofl::Engine::new("/home/valley/downloads/git/rofld/data/templates", "/home/valley/downloads/git/rofld/data/fonts");
     let image_macro = rofl::ImageMacro {
         template: "zoidberg".into(),
-        captions: vec![
-            rofl::Caption::text_at(pos, meme),
-        ],
+        captions: pos,
         ..rofl::ImageMacro::default()
     };
     let output = engine.caption(image_macro)?;

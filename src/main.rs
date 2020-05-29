@@ -87,7 +87,7 @@ struct General;
 struct Numbers;
 
 #[help]
-#[individual_command_tip = "`^help` | `^help command` | `^help group`\n"]
+#[individual_command_tip = "`^help` | `^help command` | `^help group`\nNOTE: Args are delimited via `,`."]
 fn my_help(
     context: &mut Context,
     msg: &Message,
@@ -132,7 +132,7 @@ fn main() {
                 c.with_whitespace(true)
                     .prefix("^")
                     // Delimiters are: " ", ", ", and ",".
-                    .delimiters(vec![" ", ", ", ","])
+                    .delimiters(vec![","])
             })
             // Set a function to be called prior to each command execution. This
             // provides the context of the command, the message that was received,
