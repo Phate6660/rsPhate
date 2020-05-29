@@ -16,7 +16,7 @@ How to use:
 
 - `^about`: Bot will reply with pretty embed containing title and description of bot, as well as where to find the author (me).
 - `^date`: Bot will reply with current date and time in this format -- `06:30 AM | Thu 21, May of 2020`.
-- `^embed title,desc,image_link`: Bot will generate an embed based on input and send it.*
+- `^embed title,desc,<image_link>`: Bot will generate an embed based on input and send it.*
 - `^help`: Without args, bot will give a generalized help. Specifying a command or function will explain it.
 - `^fortune`: Bot will reply with random fortune from `fortune-mod-mythical-linux` (repo is pinned to my profile if anyone is interested).*
 - `^git site,owner/repo`: Bot will reply with full link to repo.
@@ -46,7 +46,7 @@ How to use:
 
 ## Notes
 
-- `embed`: Image link is optional, it will be replaced with a 1px transparent image if not supplied, so it'll be like it's not even there.
+- `embed`: Image link is optional, it will be replaced with a 1px transparent image if not supplied, so it'll be like it's not even there. Also, don't forget to place your image link in brackets (<>) to disable the preview of them beforehand.
 - `fortune`: Potentially NSFW and offensive fortunes are *enabled*, use at your own risk.
 - `math`: Operation refers to `multiply`/`divide`/`add`/`subtract`. Example: `^math add,1,1` will make the bot reply with `2`.
 - `iv`: Requires `youtube-dl`. Example: `^iv type o negative dead again` will cause the bot to reply with an invidio link to the full album.
