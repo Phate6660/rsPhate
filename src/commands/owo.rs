@@ -1,3 +1,4 @@
+use log::error;
 use owoify::OwOifiable;
 use serenity::{
     framework::standard::{macros::command, Args, CommandResult},
@@ -14,7 +15,7 @@ fn owo(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
     let owo_text = input.owoify();
 
     if let Err(why) = msg.channel_id.say(&ctx.http, owo_text) {
-        println!("Error sending message: {:?}", why);
+        error!("Error sending message: {:?}", why);
     }
 
     Ok(())

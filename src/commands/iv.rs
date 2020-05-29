@@ -23,6 +23,7 @@ fn iv(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
         .arg(args)
         .output()
         .expect("Could not generate link.");
+    info!("video id: {}", String::from_utf8_lossy(&id.stdout));
 
     let link: String =
         "https://invidio.us/watch?v=".to_string() + &String::from_utf8_lossy(&id.stdout);

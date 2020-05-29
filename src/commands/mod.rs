@@ -8,6 +8,7 @@ pub mod git;
 pub mod hmm;
 pub mod iv;
 pub mod math;
+pub mod meme;
 pub mod owo;
 pub mod projects;
 pub mod quit;

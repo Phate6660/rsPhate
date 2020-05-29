@@ -1,4 +1,5 @@
 use date_time::{date_tuple::DateTuple, time_tuple::TimeTuple};
+use log::error;
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     model::channel::Message,
@@ -13,7 +14,7 @@ fn date(ctx: &mut Context, msg: &Message) -> CommandResult {
     let date = time + &" | ".to_string() + &date; // example output: 14:47 | 28 May 2020
 
     if let Err(why) = msg.channel_id.say(&ctx.http, date) {
-        println!("Error sending message: {:?}", why);
+        error!("Error sending message: {:?}", why);
     }
 
     Ok(())
