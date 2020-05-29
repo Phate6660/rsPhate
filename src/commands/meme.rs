@@ -10,7 +10,9 @@ use std::{fs, io::Write, path::Path};
 
 #[command]
 #[description = "Bot will generate a meme based on input."]
-#[usage = "top_text bottom_text template"]
+#[usage = "top bottom template"]
+#[example = "ah yes"]
+#[example = "ah yes,enslaved meme generator"]
 #[example = "ah yes,enslaved meme generator,anditsgone"]
 fn meme(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let meme = args.single::<String>()?;
