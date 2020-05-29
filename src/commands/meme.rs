@@ -10,40 +10,48 @@ use std::{fs, io::Write, path::Path};
 
 #[command]
 #[description = "Bot will generate a meme based on input."]
-#[usage = "top_text bottom_text"]
-#[example = "ah yes,enslaved meme generator"]
+#[usage = "top_text bottom_text template"]
+#[example = "ah yes,enslaved meme generator,anditsgone"]
 fn meme(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let meme = args.single::<String>()?;
-    let meme2 = args.single::<String>()?;
+    let meme2 = args.single::<String>().unwrap_or("empty".to_string());
+    let template = args.single::<String>().unwrap_or("zoidberg".to_string());
 
-    let pos = if meme2.is_empty() {
-        vec![rofl::Caption::text_at(rofl::VAlign::Top, meme),]
+    let pos = if meme2 == "empty" {
+        vec![rofl::Caption::text_at(rofl::VAlign::Top, meme)]
     } else {
         vec![
             rofl::Caption::text_at(rofl::VAlign::Top, meme),
-            rofl::Caption::text_at(rofl::VAlign::Bottom, meme2,)
+            rofl::Caption::text_at(rofl::VAlign::Bottom, meme2),
         ]
     };
-    let engine = rofl::Engine::new("/home/valley/downloads/git/rofld/data/templates", "/home/valley/downloads/git/rofld/data/fonts");
+    let engine = rofl::Engine::new(
+        "/home/valley/downloads/git/rofld/data/templates",
+        "/home/valley/downloads/git/rofld/data/fonts",
+    );
     let image_macro = rofl::ImageMacro {
-        template: "zoidberg".into(),
+        template: template.into(),
         captions: pos,
         ..rofl::ImageMacro::default()
     };
     let output = engine.caption(image_macro)?;
     info!("meme has been generated");
-    
-    let mut file = fs::OpenOptions::new().write(true).open("/home/valley/downloads/git/rofld/zoidberg.png")?;
+
+    let mut file = fs::OpenOptions::new()
+        .write(true)
+        .open("/tmp/meme.png")?;
     file.write_all(&*output)?;
     info!("meme has been written to /tmp/meme.png");
 
     let msg = msg.channel_id.send_message(&ctx.http, |m| {
         m.embed(|e| {
             e.title("rofl meme generator");
-            e.image("attachment://zoidberg.png");
+            e.image("attachment://meme.png");
             e
         });
-        m.add_file(AttachmentType::Path(Path::new("/home/valley/downloads/git/rofld/zoidberg.png")));
+        m.add_file(AttachmentType::Path(Path::new(
+            "/tmp/meme.png",
+        )));
         m
     });
 
