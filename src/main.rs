@@ -21,7 +21,7 @@ use std::{
 mod commands;
 use commands::{
     about::*, date::*, embed::*, fortune::*, git::*, hmm::*, iv::*, math::*, meme::*, owo::*,
-    projects::*, quit::*, rng::*, rr::*, wipltrn::*, ww::*,
+    projects::*, quit::*, rng::*, rr::*, star::*, wipltrn::*, ww::*,
 };
 
 // Load and use extra functions from src/functions/
@@ -73,7 +73,7 @@ impl EventHandler for Handler {
 // Groups
 #[group]
 #[description = "Functions for the bot that do not belong in any specific category."]
-#[commands(date, embed, git, hmm, iv, fortune, meme, owo, rr, wipltrn, ww)]
+#[commands(date, hmm, iv, fortune, meme, rr, wipltrn, ww)]
 struct Functions;
 
 #[group]
@@ -85,6 +85,11 @@ struct General;
 #[description = "Functions that are related to number operations."]
 #[commands(math, rng)]
 struct Numbers;
+
+#[group]
+#[description = "Functions that are related to message operations."]
+#[commands(embed, git, owo, star)]
+struct Messages;
 
 #[help]
 #[individual_command_tip = "`^help` | `^help command` | `^help group`\nNOTE: Args are delimited via `,`."]
@@ -193,7 +198,8 @@ fn main() {
             // #name is turned all uppercase
             .group(&FUNCTIONS_GROUP)
             .group(&GENERAL_GROUP)
-            .group(&NUMBERS_GROUP),
+            .group(&NUMBERS_GROUP)
+            .group(&MESSAGES_GROUP),
     );
 
     if let Err(why) = client.start() {
