@@ -6,6 +6,10 @@ use serenity::{
 
 #[command]
 #[description = "Bot will reply with pretty embed explaining why the topic is bad."]
+#[usage = "topic"]
+#[example = "apple"]
+#[example = "steam"]
+#[example = "systemd"]
 fn ww(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
     let arg = args.rest();
 
