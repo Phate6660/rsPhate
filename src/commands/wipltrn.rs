@@ -1,3 +1,4 @@
+use mpd::{Client, Song};
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     http::AttachmentType,
@@ -5,27 +6,22 @@ use serenity::{
     prelude::*,
 };
 use std::path::Path;
-use std::process::Command;
 
 #[command]
 #[description = "Bot will reply with pretty embed containing current music info and cover art of what Phate is listening to."]
 fn wipltrn(ctx: &mut Context, msg: &Message) -> CommandResult {
-    // `mus_title` = artist - title
-    let mus_title = Command::new("sh")
-        .arg("-c")
-        .arg("mpc -f \"%artist% - %title%\" | head -n1")
-        .output()
-        .expect("Could not obtain artist and title.");
-    // `mus_album` = album (date)
-    let mus_album = Command::new("sh")
-        .arg("-c")
-        .arg("mpc -f \"%album% (%date%)\" | head -n1")
-        .output()
-        .expect("Could not obtain album and date.");
+    let mut c = Client::connect("127.0.0.1:6600").unwrap();
+    let song: Song = c.currentsong().unwrap().unwrap();
+    let tit = song.title.as_ref().unwrap();
+    let art = song.tags.get("Artist").unwrap();
+    let alb = song.tags.get("Album").unwrap();
+    let dat = song.tags.get("Date").unwrap();
+    let mus_title = art.to_owned() + &" - ".to_string() + tit;
+    let mus_album = alb.to_owned() + &" (".to_string() + &dat + &")".to_string();
     let msg = msg.channel_id.send_message(&ctx.http, |m| {
         m.embed(|e| {
-            e.title(String::from_utf8_lossy(&mus_title.stdout));
-            e.description(String::from_utf8_lossy(&mus_album.stdout));
+            e.title(&mus_title);
+            e.description(&mus_album);
             e.image("attachment://cover.png");
             e
         });
