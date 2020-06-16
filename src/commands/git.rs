@@ -8,10 +8,10 @@ use serenity::{
 
 #[command]
 #[description = "Bot will parse the input and output the correct full link to the repo."]
-#[usage = "site user/repo"]
-#[example = "github rsfetch/rsfetch"]
-#[example = "gitlab ArcticTheRogue/asgl"]
-#[example = "codeberg Phate6660/rsPhate"]
+#[usage = "site,user/repo"]
+#[example = "github,rsfetch/rsfetch"]
+#[example = "gitlab,ArcticTheRogue/asgl"]
+#[example = "codeberg,Phate6660/rsPhate"]
 #[num_args(2)]
 fn git(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let site = args.single::<String>()?;
