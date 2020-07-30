@@ -1,0 +1,6 @@
+#!/bin/bash
+
+case "$1" in
+    file) find /home/valley/downloads/just_yes/ -type f -exec file --mime-type {} + | awk -F: '{if ($2 ~/image\//) print $1}' | shuf -n1;;
+    name) echo "$2" | sed 's/.*\///';;
+esac

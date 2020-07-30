@@ -1,6 +1,6 @@
 # rsPhate
 
-[![made-with-emacs](https://img.shields.io/badge/made%20with-emacs-993399.svg)](https://www.gnu.org/software/emacs/) ![lines of code](https://tokei.rs/b1/github/Phate6660/rsPhate?category=code)
+![license](https://img.shields.io/badge/license-public%20domain-green) [![made-with-emacs](https://img.shields.io/badge/made%20with-emacs-993399.svg)](https://www.gnu.org/software/emacs/) ![lines of code](https://tokei.rs/b1/github/Phate6660/rsPhate?category=code)
 
 ![bot](images/bot.png?raw=true "bot")
 

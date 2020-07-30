@@ -11,7 +11,8 @@ use serenity::{
 #[usage = "site,user/repo"]
 #[example = "github,rsfetch/rsfetch"]
 #[example = "gitlab,ArcticTheRogue/asgl"]
-#[example = "codeberg,Phate6660/rsPhate"]
+#[example = "codeberg,Phate6660/musinfo"]
+#[example = "sourcehut,phate/rsPhate"]
 #[num_args(2)]
 fn git(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let site = args.single::<String>()?;
@@ -33,6 +34,10 @@ fn git(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
             .build(),
         "codeberg" => MessageBuilder::new()
             .push("https://codeberg.org/")
+            .push(repo)
+            .build(),
+        "sourcehut" => MessageBuilder::new()
+            .push("https://sr.ht/~")
             .push(repo)
             .build(),
         _ => "Could not generate a full link, please try again.".to_string(),

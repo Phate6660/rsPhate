@@ -23,10 +23,10 @@ fn iv(ctx: &mut Context, msg: &Message, args: Args) -> CommandResult {
         .arg(args)
         .output()
         .expect("Could not generate link.");
-    info!("video id: {}", String::from_utf8_lossy(&id.stdout));
+    info!("video id: {}", String::from_utf8_lossy(&id.stdout).trim());
 
     let link: String =
-        "https://invidio.us/watch?v=".to_string() + &String::from_utf8_lossy(&id.stdout);
+        "https://invidio.us/watch?v=".to_string() + &String::from_utf8_lossy(&id.stdout).trim();
     info!("invidio link: {}", link);
 
     if let Err(why) = msg.channel_id.say(&ctx.http, link) {

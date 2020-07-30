@@ -1,3 +1,5 @@
+use log::error;
+use mpd::{Client, Stats};
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     model::channel::Message,
@@ -8,18 +10,11 @@ use std::process::Command;
 #[command]
 #[description = "How much music does Phate have?"]
 fn hmm(ctx: &mut Context, msg: &Message) -> CommandResult {
-    let artists = Command::new("scripts/hmm")
-        .arg("artists")
-        .output()
-        .expect("Could not obtain amount of artists.");
-    let albums = Command::new("scripts/hmm")
-        .arg("albums")
-        .output()
-        .expect("Could not obtain amount of albums.");
-    let songs = Command::new("scripts/hmm")
-        .arg("songs")
-        .output()
-        .expect("Could not obtain amount of songs.");
+    let mut c = Client::connect("127.0.0.1:6600").unwrap();
+    let stats: Stats = c.stats().unwrap();
+    let artists = stats.artists.to_string();
+    let albums = stats.albums.to_string();
+    let songs = stats.songs.to_string();
     let files = Command::new("scripts/hmm")
         .arg("files")
         .output()
@@ -37,12 +32,24 @@ fn hmm(ctx: &mut Context, msg: &Message) -> CommandResult {
             e.title("`^hmm`");
             e.description("How Much Music (Does Phate Have?)");
             e.fields(vec![
-                ("Artists", String::from_utf8_lossy(&artists.stdout), true),
-                ("Albums", String::from_utf8_lossy(&albums.stdout), true),
-                ("Songs", String::from_utf8_lossy(&songs.stdout), true),
-                ("Files", String::from_utf8_lossy(&files.stdout), true),
-                ("Size of Collection", String::from_utf8_lossy(&size.stdout), true),
-                ("Amount of Songs Played", String::from_utf8_lossy(&amount.stdout), true),
+                ("Artists", artists, true),
+                ("Albums", albums, true),
+                ("Songs", songs, true),
+                (
+                    "Files",
+                    String::from_utf8_lossy(&files.stdout).to_string(),
+                    true,
+                ),
+                (
+                    "Size of Collection",
+                    String::from_utf8_lossy(&size.stdout).to_string(),
+                    true,
+                ),
+                (
+                    "Amount of Songs Played",
+                    String::from_utf8_lossy(&amount.stdout).to_string(),
+                    true,
+                ),
             ]);
             e
         });
@@ -50,7 +57,7 @@ fn hmm(ctx: &mut Context, msg: &Message) -> CommandResult {
     });
 
     if let Err(why) = msg {
-        println!("Error sending message: {:?}", why);
+        error!("Error sending message: {:?}", why);
     }
     Ok(())
 }
