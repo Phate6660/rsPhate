@@ -16,6 +16,5 @@ pub mod projects;
 pub mod quit;
 pub mod rng;
 pub mod rr;
-pub mod star;
 pub mod wipltrn;
 pub mod ww;

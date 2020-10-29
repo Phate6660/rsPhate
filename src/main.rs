@@ -21,12 +21,12 @@ use std::{
 mod commands;
 use commands::{
     about::*, date::*, embed::*, fortune::*, git::*, hmm::*, iv::*, math::*, meme::*, noice::*,
-    owo::*, projects::*, quit::*, rng::*, rr::*, star::*, wipltrn::*, ww::*,
+    owo::*, projects::*, quit::*, rng::*, rr::*, wipltrn::*, ww::*,
 };
 
 // Load and use extra functions from src/functions/
 mod functions;
-use functions::{prefix_space_check::prefix_space_check, yt_tw_check::yt_tw_check};
+use functions::{prefix_space_check::prefix_space_check, star::star};
 
 // A container type is created for inserting into the Client's `data`, which
 // allows for data to be accessible across all events and framework commands, or
@@ -88,7 +88,7 @@ struct Numbers;
 
 #[group]
 #[description = "Functions that are related to message operations."]
-#[commands(embed, git, owo, star)]
+#[commands(embed, git, owo)]
 struct Messages;
 
 #[help]
@@ -175,7 +175,6 @@ fn main() {
                 prefix_space_check(ctx, msg, unknown_command_name);
             })
             .normal_message(|ctx, msg| {
-                yt_tw_check(ctx, msg);
             })
             // Set a function that's called whenever a command's execution didn't complete for one
             // reason or another. For example, when a user has exceeded a rate-limit or a command

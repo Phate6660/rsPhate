@@ -5,6 +5,8 @@ use serenity::{model::channel::Message, prelude::*};
 pub fn prefix_space_check(ctx: &mut Context, msg: &Message, unknown_command_name: &str) {
     if msg.content.contains("^ ") {
         info!("There was a space after the prefix, assuming the bot was not intended to be used.");
+    } else if msg.content.contains("^\n") {
+        info!("There was a newline after the prefix, assuming the bot was not intended to be used.");
     } else {
         error!("Invalid command: '{}'", unknown_command_name);
         let msg = msg.channel_id.send_message(&ctx.http, |m| {
