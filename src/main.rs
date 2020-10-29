@@ -106,7 +106,7 @@ fn my_help(
 
 fn main() {
     // This will load the environment variables located at `./.env`, relative to the CWD.
-    kankyo::load().expect("Failed to load .env file");
+    kankyo::load(true).expect("Failed to load .env file");
 
     // Initialize the logger to use environment variables.
     env_logger::init();
