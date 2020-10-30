@@ -30,11 +30,11 @@ fn about(ctx: &mut Context, msg: &Message) -> CommandResult {
             e.thumbnail(bot_icon);
             // false = not inline
             e.fields(vec![
-                ("Scripting/Programming", "[Codeberg](https://codeberg.org/Phate6660), [sourcehut](https://sr.ht/~phate)", false),
-                ("Social", "[Reddit](https://reddit.com/u/Valley6660), [Lobsters](https://lobste.rs/u/Phate6660)", false),
-                ("Personal Site", "https://pages.codeberg.org/Phate6660/", false),
-                ("Discord", "Phate6660#6270", false),
-                ("Source Code", "[Phate6660/rsPhate](https://codeberg.org/Phate6660/rsPhate)", false),
+                ("Scripting/Programming", "[GitHub](https://github.com/Phate6660), [Codeberg](https://codeberg.org/Phate6660), [sourcehut](https://sr.ht/~phate)", false),
+                ("Social", "[Lobsters](https://lobste.rs/u/Phate6660), [Mastodon](https://fosstodon.org/@Phate6660)", false),
+                ("Personal Site", "https://Phate6660.codeberg.page", false),
+                ("Discord", "Phate#6660", false),
+                ("Source Code", "[Phate6660/rsPhate](https://github.com/Phate6660/rsPhate)", false),
             ]);
             e
         });
