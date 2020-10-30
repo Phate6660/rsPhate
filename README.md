@@ -24,6 +24,7 @@ How to use:
 - `^git site,owner/repo`: Bot will reply with full link to repo.
 - `^hmm`: How much music does Phate have?
 - `^iv SEARCH`: Bot will reply with an invidio link of the search query.*
+- `^noice`: Bot will reply with image from his just_yes folder, image will be spoiler'd
 - `^math operation,num,num`: Bot will do math for you (basic add/sub/div/mul) and reply with the result.*
 - `^meme position,text`: Bot will generate a meme based on the input and send it as an image.
 - `^owo input`: Bot will reply with OwO-ified input.
