@@ -9,7 +9,6 @@ pub mod git;
 pub mod hmm;
 pub mod iv;
 pub mod math;
-pub mod meme;
 pub mod noice;
 pub mod owo;
 pub mod projects;

@@ -20,7 +20,7 @@ use std::{
 // Load and use commands from src/commands/
 mod commands;
 use commands::{
-    about::*, date::*, embed::*, fortune::*, git::*, hmm::*, iv::*, math::*, meme::*, noice::*,
+    about::*, date::*, embed::*, fortune::*, git::*, hmm::*, iv::*, math::*, noice::*,
     owo::*, projects::*, quit::*, rng::*, rr::*, wipltrn::*, ww::*,
 };
 
@@ -73,7 +73,7 @@ impl EventHandler for Handler {
 // Groups
 #[group]
 #[description = "Functions for the bot that do not belong in any specific category."]
-#[commands(date, hmm, iv, fortune, meme, noice, rr, wipltrn, ww)]
+#[commands(date, hmm, iv, fortune, noice, rr, wipltrn, ww)]
 struct Functions;
 
 #[group]
