@@ -11,17 +11,17 @@ fn projects(ctx: &mut Context, msg: &Message) -> CommandResult {
         m.embed(|e| {
             e.title("Other Projects Created/Co-Created by The Author");
             e.fields(vec![
-                ("rsfetch", "https://github.com/Phate6660/rsfetch", false),
-                ("nixinfo", "https://github.com/Phate6660/rsnixinfo", false),
-                ("rsmpv", "https://github.com/Phate6660/rsmpv", false),
-                ("rsmpc", "https://github.com/Phate6660/rsmpc", false),
-                ("pkg", "https://github.com/Phate6660/pkg", false),
-                ("p6nc-overlay", "https://github.com/p6nc/overlay", false),
-                ("undeprecated-overlay", "https://github.com/Phate6660/undeprecated", false),
+                ("cfg", "https://github.com/Phate6660/cfg", false),
                 ("gzdoom-discordrpc", "https://github.com/Phate6660/gzdoom-discordrpc", false),
                 ("musinfo", "https://github.com/Phate6660/musinfo", false),
-				("WBMPFMPD", "https://github.com/Phate6660/WBMPFMPD", false),
-				("cfg", "https://github.com/Phate6660/cfg", false),
+				("nixinfo", "https://github.com/Phate6660/rsnixinfo", false),
+                ("p6nc-overlay", "https://github.com/p6nc/overlay", false),
+                ("pkg", "https://github.com/Phate6660/pkg", false),
+                ("rsfetch", "https://github.com/Phate6660/rsfetch", false),
+                ("rsmpc", "https://github.com/Phate6660/rsmpc", false),
+                ("rsmpv", "https://github.com/Phate6660/rsmpv", false),
+                ("undeprecated-overlay", "https://github.com/Phate6660/undeprecated", false),
+                ("WBMPFMPD", "https://github.com/Phate6660/WBMPFMPD", false),
             ]);
             e
         });
