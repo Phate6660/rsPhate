@@ -20,8 +20,8 @@ use std::{
 // Load and use commands from src/commands/
 mod commands;
 use commands::{
-    about::*, date::*, embed::*, fortune::*, git::*, hmm::*, iv::*, math::*, noice::*,
-    owo::*, projects::*, quit::*, rng::*, rr::*, wipltrn::*, ww::*,
+    about::*, date::*, embed::*, fortune::*, git::*, hmm::*, math::*, noice::*,
+    projects::*, quit::*, rng::*, wipltrn::*, ww::*,
 };
 
 // Load and use extra functions from src/functions/
@@ -73,7 +73,7 @@ impl EventHandler for Handler {
 // Groups
 #[group]
 #[description = "Functions for the bot that do not belong in any specific category."]
-#[commands(date, hmm, iv, fortune, noice, rr, wipltrn, ww)]
+#[commands(date, hmm, fortune, noice, wipltrn, ww)]
 struct Functions;
 
 #[group]
@@ -88,7 +88,7 @@ struct Numbers;
 
 #[group]
 #[description = "Functions that are related to message operations."]
-#[commands(embed, git, owo)]
+#[commands(embed, git)]
 struct Messages;
 
 #[help]
