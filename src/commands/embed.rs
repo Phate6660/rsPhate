@@ -11,7 +11,7 @@ use serenity::{
 fn embed(ctx: &mut Context, msg: &Message, mut args: Args) -> CommandResult {
     let title = args.single::<String>()?;
     let description = args.single::<String>()?;
-    let mut image = args.single::<String>().unwrap_or("false".to_string());
+    let image = args.single::<String>().unwrap_or_else(|_| "false".to_string());
     
     let link = if image == "false" {
         "https://i.imgur.com/pMBcpoq.png".to_string()

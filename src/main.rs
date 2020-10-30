@@ -26,7 +26,7 @@ use commands::{
 
 // Load and use extra functions from src/functions/
 mod functions;
-use functions::{prefix_space_check::prefix_space_check, star::star};
+use functions::{prefix_space_check::prefix_space_check, yt_tw_check::tw_check};
 
 // A container type is created for inserting into the Client's `data`, which
 // allows for data to be accessible across all events and framework commands, or
@@ -175,6 +175,7 @@ fn main() {
                 prefix_space_check(ctx, msg, unknown_command_name);
             })
             .normal_message(|ctx, msg| {
+                tw_check(ctx, msg);
             })
             // Set a function that's called whenever a command's execution didn't complete for one
             // reason or another. For example, when a user has exceeded a rate-limit or a command
@@ -184,7 +185,7 @@ fn main() {
                     msg.reply(
                         &ctx.http,
                         "Owner check failed! I will ping you a hundredfold if you do that again! <:sadgry:676458405342216195>",
-                    );
+                    ).expect("could not reply with angry failed owner check");
                 }
                 _ => {
                     error!("Unhandled dispatch error!");

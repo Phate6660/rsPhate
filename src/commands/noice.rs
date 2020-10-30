@@ -1,4 +1,4 @@
-use log::{error, info};
+use log::error;
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     http::AttachmentType,
@@ -15,7 +15,7 @@ fn noice(ctx: &mut Context, msg: &Message) -> CommandResult {
         .arg("file")
         .output()
         .expect("Could not obtain random image");
-    let path = format!("{}", String::from_utf8_lossy(&file.stdout).trim());
+    let path = String::from_utf8_lossy(&file.stdout).trim().to_string();
     let name = Command::new("scripts/noice")
         .arg("name")
         .arg(path)
@@ -24,7 +24,7 @@ fn noice(ctx: &mut Context, msg: &Message) -> CommandResult {
     let new_file = format!("images/just_yes/SPOILER_{}", String::from_utf8_lossy(&name.stdout).trim());
     fs::copy(String::from_utf8_lossy(&file.stdout).trim(), new_file).expect("could not copy file");
     let new_file2 = format!("images/just_yes/SPOILER_{}", String::from_utf8_lossy(&name.stdout).trim());
-    let path2 = format!("{}", new_file2);
+    let path2 = new_file2;
     
     let msg = msg.channel_id.send_message(&ctx.http, |m| {
         m.add_file(AttachmentType::Path(Path::new(&path2)));
