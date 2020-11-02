@@ -1,5 +1,4 @@
 use mpd::{Client, Song};
-use sedregex::find_and_replace;
 use serenity::{
     framework::standard::{macros::command, CommandResult},
     http::AttachmentType,
@@ -13,14 +12,12 @@ use std::path::Path;
 fn wipltrn(ctx: &mut Context, msg: &Message) -> CommandResult {
     let mut c = Client::connect("127.0.0.1:6600").unwrap();
     let song: Song = c.currentsong().unwrap().unwrap();
-    let fil = song.file;
-    let format = find_and_replace(&fil, &["s/.*\\.//"]).unwrap();
     let tit = song.title.as_ref().unwrap();
     let na = "N/A".to_string();
     let art = song.tags.get("Artist").unwrap_or(&na);
     let alb = song.tags.get("Album").unwrap_or(&na);
     let dat = song.tags.get("Date").unwrap_or(&na);
-    let mus_title = [art, " - ", tit, " [", &format, "]"].concat();
+    let mus_title = [art, " - ", tit].concat();
     let mus_album = [alb, " (", dat, ")"].concat();
     let msg = msg.channel_id.send_message(&ctx.http, |m| {
         m.embed(|e| {
